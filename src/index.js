@@ -14,14 +14,18 @@ import ReactCalendar from "./ReactCalendar";
 import ReactBigCalendar from "./ReactBigCalendar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+
 
 const rootElement = document.getElementById("root");
+const loggedIn = window.localStorage.getItem("isLoggedIn")
 ReactDOM.render(
 
 <BrowserRouter >
       <Switch>
-        <Route exact path="/" component={ReactBigCalendar} />
+        <Route exact path="/" component={loggedIn? Dashboard : Login} />
         {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
+        <Route exact path="/dashboard" component={Dashboard} />
 
         <Route exact path="/1" component={TuiCalendar} />
         <Route exact path="/2" component={ReactCalendar} />

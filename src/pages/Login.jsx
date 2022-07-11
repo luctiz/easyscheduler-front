@@ -13,30 +13,40 @@ export default function Login() {
         e.preventDefault()
         const form = new FormData(e.currentTarget);
   
-        let url = "xxxxx"
-        let data = JSON.stringify({
-            "username": form.get("username"), 
-            "password": form.get("password")})
+        let user = form.get("username")
+        let pass = form.get("password")
+
+        let url = `http://localhost:8080/usuario/${user}`
   
         fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': "application/json; charset=utf-8"},
-          body: data,
+          method: 'GET'
         })
         .then((response) => {
+          console.log(response)
+          response.json().then(data => {
+          console.log(data)
+
           if (response.ok){
-            swal.fire({
-              title: "Login exitoso", //directamente redireccionar
-              icon: "success"});
-            updateDashboard();
+            if (data.contrasenia != pass){
+              swal.fire({
+                title: "Ocurrió un error: ",
+                text: "Contraseña incorrecta",
+                icon: "error"});
+            } else {
+              window.localStorage.setItem("username", user)
+              window.localStorage.setItem("isLoggedIn", true)
+              window.location.href = "/dashboard";
+            }
           } else {
-            console.log(response)
             swal.fire({
               title: "Ocurrió un error: ",
-              text: response.statusText,
+              text: data.message,
               icon: "error"});
-          }})
+          }
+        })
+        })
+
+          
         .catch((error) => {console.log(error); swal.fire({
           title: "Ocurrió un error: ",
           text: error.message,
