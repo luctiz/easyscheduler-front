@@ -1,0 +1,36 @@
+.title{
+
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+    text-align: left;
+    font-family: "Google Sans",Roboto,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .25px;
+    line-height: 20px;
+    color: #3c4043;
+    text-transform: none;
+
+    
+    /* font-family: "Google Sans",Roboto,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .25px;
+    line-height: 20px;
+    color: #3c4043;
+    text-transform: none;
+    cursor: pointer;
+    transition: all ease 0.5s;
+    margin: 0;
+    padding-left: 16px;
+    padding-right: 12px;
+    height: 32px; */
+}
+
+.title:hover{
+    background-color: #f1f3f4;
+}

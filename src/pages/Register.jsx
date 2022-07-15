@@ -12,36 +12,42 @@ export default function Register() {
         e.preventDefault()
         const form = new FormData(e.currentTarget);
   
-        let url = "xxxxx"
-        let data = JSON.stringify({
-            "username": form.get("username"), 
-            "password": form.get("password"),
-            "confirmpassword": form.get("confirmpassword")})
-  
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': "application/json; charset=utf-8"},
-          body: data,
-        })
-        .then((response) => {
-          if (response.ok){
-            swal.fire({
-              title: "Tu usuario se creó exitosamente", // redireccionar a pantalla principal?
-              icon: "success"});
-            updateDashboard();
-          } else {
-            console.log(response)
-            swal.fire({
-              title: "Ocurrió un error: ",
-              text: response.statusText,
-              icon: "error"});
-          }})
-        .catch((error) => {console.log(error); swal.fire({
-          title: "Ocurrió un error: ",
-          text: error.message,
-          icon: "error"});});
-          
+        let url = `http://localhost:8080/usuario/${form.get("username")}&${form.get("password")}`
+        
+        if (form.get("password") != form.get("confirmPassword")){
+          swal.fire({
+            title: "Ocurrió un error: ",
+            text: "Las contraseñas no coinciden",
+            icon: "error"});
+        } else {
+          fetch(url, {
+            method: 'POST',
+             headers: {
+               'Content-Type': "application/json; charset=utf-8"},
+            //body: data,
+          })
+          .then((response) => {
+            response.json().then((data) => {
+            if (response.ok){
+              swal.fire({
+                title: "Tu usuario se creó exitosamente", // redireccionar a pantalla principal?
+                icon: "success"}).then(function() {
+                  window.location.href = "/login";
+                })
+            } else {
+              swal.fire({
+                title: "Ocurrió un error: ",
+                text: data.message,
+                icon: "error"});
+            }})
+          })
+
+          .catch((error) => {console.log(error); swal.fire({
+            title: "Ocurrió un error: ",
+            text: error.message,
+            icon: "error"});});
+            
+        }
       }
 
       return (
@@ -61,7 +67,7 @@ export default function Register() {
               <Stack spacing={2} style={{display:"flex", justifyContent:"center"}}>
                 <TextField id="username" name="username" label="Usuario" variant="outlined" />
                 <TextField id="password" name="password" type="password" label="Contraseña" variant="outlined" />
-                <TextField id="confirmpassword" name="confirmpassword" type="confirmpassword" label="Confirmar Contraseña" variant="outlined" />
+                <TextField id="confirmpassword" name="confirmPassword" type="password" label="Confirmar Contraseña" variant="outlined" />
                     
                 <Button variant="contained" type="submit">Crear usuario</Button>
 

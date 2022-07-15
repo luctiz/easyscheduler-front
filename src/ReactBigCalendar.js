@@ -27,7 +27,7 @@ export default function ReactBigCalendar() {
   return (
     <div className="App">
       <Calendar
-        views={["day", "agenda", "work_week", "month"]}
+        views={["day", "week", "month", "agenda"]}
         selectable
         localizer={localizer}
         defaultDate={new Date()}

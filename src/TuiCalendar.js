@@ -54,7 +54,10 @@ const calendars = [
   }
 ];
 
-export default function TuiCalendar() {
+const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
+
+
+export default function TuiCalendar({selectedView}) {
   const cal = useRef(null);
 
   const onClickSchedule = useCallback((e) => {
@@ -108,7 +111,8 @@ export default function TuiCalendar() {
   function _getFormattedTime(time) {
     const date = new Date(time);
     const h = date.getHours();
-    const m = date.getMinutes();
+    
+    const m = ("0" + date.getMinutes()).slice(-2);
 
     return `${h}:${m}`;
   }
@@ -145,14 +149,15 @@ export default function TuiCalendar() {
     }
   };
 
+  console.log(selectedView)
   return (
     <div className="App">
-      <h1>Welcome to TOAST Ui Calendar</h1>
-
       <TUICalendar
         ref={cal}
-        height="1000px"
-        view="week"
+        //views={["day", "week", "month", "agenda"]}
+        view= {selectedView}
+        //scheduleView
+        taskView={false}
         useCreationPopup={true}
         useDetailPopup={true}
         template={templates}
@@ -162,6 +167,16 @@ export default function TuiCalendar() {
         onBeforeCreateSchedule={onBeforeCreateSchedule}
         onBeforeDeleteSchedule={onBeforeDeleteSchedule}
         onBeforeUpdateSchedule={onBeforeUpdateSchedule}
+        month= {{
+          daynames: DAYNAMES_SPANISH,
+          startDayOfWeek: 0,
+          narrowWeekend: false
+        }}
+        week= {{
+            daynames: DAYNAMES_SPANISH,
+            startDayOfWeek: 0,
+            narrowWeekend: false
+        }}
       />
     </div>
   );
