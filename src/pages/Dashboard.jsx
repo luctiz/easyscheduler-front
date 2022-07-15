@@ -13,6 +13,7 @@ export default function Dashboard() {
     let myUsername;
     if (!window.localStorage.getItem("isLoggedIn") || !window.localStorage.getItem("username")){
         window.location.href = "/";
+        return;
     } else {
         myUsername = window.localStorage.getItem("username")
     }
@@ -58,7 +59,7 @@ export default function Dashboard() {
       return (
         <div style={{display: "flex", width: "100%"}}>
 
-        <div style={{flexDirection: "column", flex: "none", width: "256px", overflow: "hidden", position: "relative"}} ><Sidebar></Sidebar></div>
+        <div style={{flexDirection: "column", flex: "none", width: "256px", overflow: "hidden", position: "relative"}} ><Sidebar username={myUsername}></Sidebar></div>
             
 
         <div style={{flex: "1 1 auto", overflow: "hidden", position: "relative"}}><ESCalendar></ESCalendar></div>    
