@@ -1,7 +1,8 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef , useState} from "react";
 import { render } from "react-dom";
 
 import TUICalendar from "@toast-ui/react-calendar";
+import Calendar from "tui-calendar";
 import { ISchedule, ICalendarInfo } from "tui-calendar";
 
 import "tui-calendar/dist/tui-calendar.css";
@@ -10,55 +11,21 @@ import "tui-time-picker/dist/tui-time-picker.css";
 
 import "./styles.css";
 
-const start = new Date();
-const end = new Date(new Date().setMinutes(start.getMinutes() + 30));
-const schedules = [
-  {
-    calendarId: "1",
-    category: "time",
-    isVisible: true,
-    title: "Study",
-    id: "1",
-    body: "Test",
-    start,
-    end
-  },
-  {
-    calendarId: "2",
-    category: "time",
-    isVisible: true,
-    title: "Meeting",
-    id: "2",
-    body: "Description",
-    start: new Date(new Date().setHours(start.getHours() + 1)),
-    end: new Date(new Date().setHours(start.getHours() + 2))
-  }
-];
-
-const calendars = [
-  {
-    id: "1",
-    name: "My Calendar",
-    color: "#ffffff",
-    bgColor: "#9e5fff",
-    dragBgColor: "#9e5fff",
-    borderColor: "#9e5fff"
-  },
-  {
-    id: "2",
-    name: "Company",
-    color: "#ffffff",
-    bgColor: "#00a9ff",
-    dragBgColor: "#00a9ff",
-    borderColor: "#00a9ff"
-  }
-];
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+const options = {year: 'numeric', month: 'long'};
 
 const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 
-export default function TuiCalendar({selectedView}) {
+export default function TuiCalendar({schedules, calendars}){
+
   const cal = useRef(null);
+  const [selectedView, setSelectedView] = useState("month")
+  const [currentHeaderDate, setCurrentHeaderDate] = useState((new Date()).toLocaleDateString(undefined, options))
 
   const onClickSchedule = useCallback((e) => {
     const { calendarId, id } = e.schedule;
@@ -149,9 +116,28 @@ export default function TuiCalendar({selectedView}) {
     }
   };
 
+  const updateCurrentHeaderDate = () => {
+    (setCurrentHeaderDate(cal.current ? addDays(cal.current.getInstance().getDateRangeStart().toDate(),
+              selectedView == "day" ? 0 : 6).toLocaleDateString(undefined, options) : ""))
+  }
+
   console.log(selectedView)
   return (
-    <div className="App">
+    <div >
+      
+    <div className="rbc-toolbar">
+            <span className="rbc-btn-group">
+                <button type="button" onClick={()=> {cal.current.getInstance().today();updateCurrentHeaderDate()}}>Hoy</button>
+                <button type="button" onClick={()=> {cal.current.getInstance().prev();updateCurrentHeaderDate()}}>Anterior</button>
+                <button type="button"onClick={()=> {cal.current.getInstance().next();updateCurrentHeaderDate()}}>Siguiente</button>
+                </span>
+            <span className="rbc-toolbar-label">{currentHeaderDate}</span>
+            <span className="rbc-btn-group">
+                <button type="button" onClick={() => setSelectedView("day")} className="">Día</button>
+                <button type="button" onClick={() => setSelectedView("week")} className="">Semana</button>
+                <button type="button" onClick={() => setSelectedView("month")} className="">Mes</button>
+                {/* <button type="button" onClick={() => setSelectedView("agenda")} className="">Agenda</button> */}
+            </span></div>
       <TUICalendar
         ref={cal}
         //views={["day", "week", "month", "agenda"]}

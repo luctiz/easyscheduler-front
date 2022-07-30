@@ -70,7 +70,7 @@ export default function ModalEquipo({username, equipo}) {
     let body = JSON.stringify(data)
 
     fetch(url, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
             'Content-Type': "application/json; charset=utf-8"},
         body: body}

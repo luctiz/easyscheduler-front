@@ -3,12 +3,16 @@ import { Add, ArrowDropDownOutlined, Drafts, ExpandLess, ExpandMore, Inbox, Logo
 import { useState } from "react";
 import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress} from "@mui/material";
 import ModalEquipo from './ModalEquipo';
+import ModalCrearEquipo from './ModalCrearEquipo';
+import swal from 'sweetalert2';
 
 
 export default function ListEquipos({username}){
     const [openCollapse, setOpenCollapse] = useState(true)
 
     const [equipos, setEquipos] = useState(null)
+
+    const updateListEquipos = () => {setEquipos(null)};
 
 
     if (!equipos){
@@ -54,35 +58,10 @@ export default function ListEquipos({username}){
             {equipos ? 
             <Collapse in={openCollapse} timeout="auto" unmountOnExit> 
                 <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
-                    {equipos.map((equipo) => <ModalEquipo username={username} equipo={equipo}></ModalEquipo>
+                    {equipos.map((equipo) => <ModalEquipo username={username} key={equipo} equipo={equipo}></ModalEquipo>
                     )}
-{/*                 
-                <ListItemButton>
-                    <ListItemIcon>
-                     <GroupIcon></GroupIcon>
-                    </ListItemIcon>
-                    <ListItemText primary="Equipo 2" />
-                </ListItemButton>
-                <ListItemButton>
-                    <ListItemIcon>
-                     <GroupIcon></GroupIcon>
-                    </ListItemIcon>
-                    <ListItemText primary="Equipo 3" />
-                </ListItemButton>
-                <ListItemButton>
-                    <ListItemIcon>
-                     <GroupIcon></GroupIcon>
-                    </ListItemIcon>
-                    <ListItemText primary="Equipo 4" />
-                </ListItemButton> */}
 
-                <ListItemButton  onClick={(e) => {e.stopPropagation()}}>
-                    <ListItemIcon>
-                    <Add />
-                    </ListItemIcon>
-                    <ListItemText primary="Nuevo" />
-
-                </ListItemButton>
+                <ModalCrearEquipo username={username} updateListEquipos={updateListEquipos}/>
                 </List>
             </Collapse>
             : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}

@@ -9,7 +9,7 @@ import GroupsIcon from '@mui/icons-material/Group';
 import { Add} from "@mui/icons-material";
 
 
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider, TextField} from "@mui/material";
+import { IconButton , ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider, TextField, Button} from "@mui/material";
 import swal from 'sweetalert2';
 
 
@@ -26,7 +26,7 @@ const style = {
 };
 
 
-export default function ModalAgregarMiembroEquipo({username, equipo, updateModalEquipo}) {
+export default function ModalCrearEquipo({username, updateListEquipos}) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -36,35 +36,29 @@ export default function ModalAgregarMiembroEquipo({username, equipo, updateModal
 
   const handleMiembroSubmit = async (e) =>{
     e.preventDefault()
-    e.stopPropagation()
     const form = new FormData(e.currentTarget);
+    const nombreEquipo = form.get("nombreEquipo");
 
-    let url = `http://localhost:8080/equipo/agregarMiembro/${form.get("miembro")}`
+    let url = `http://localhost:8080/equipo/${nombreEquipo}&${username}`;
 
-    let data = {
-        "lider": username,
-        "nombre": equipo
-    };
+    let data = [];
 
     let body = JSON.stringify(data)
-    console.log(body)
 
     fetch(url, {
+        method: 'PUT',
         headers: {
-            'Content-Type': "application/json"},
-        body: body,
-        method: 'PATCH'
+            'Content-Type': "application/json; charset=utf-8"},
+        body: body
     }).then((response) => {
         console.log(response)
         response.json().then(data => {
         console.log(data)
         if (response.ok){
             swal.fire({
-                title: "Se agrego el miembro exitosamente",
+                title: `Se creo el equipo ${nombreEquipo} exitosamente`,
                 icon: "success"
-            }).then(() => {setOpen(false), updateModalEquipo()});
-            //setEquipoData({"lider": data[0].equipos.filter((e) => e.nombre == equipo)[0].lider,
-            //             "miembros": data.map((usuario) => usuario.nombreUsuario)})
+            }).then(() => {setOpen(false), updateListEquipos()});
         } else {
         swal.fire({
             title: "Ocurrió un error: ",
@@ -79,11 +73,11 @@ export default function ModalAgregarMiembroEquipo({username, equipo, updateModal
 
   return (
     <div>
-    <ListItemButton onClick={handleOpen} key={equipo}>
+    <ListItemButton onClick={handleOpen}>
         <ListItemIcon>
         <Add />
         </ListItemIcon>
-        <ListItemText primary="Agregar" />
+        <ListItemText primary="Nuevo" />
     </ListItemButton>
      <Modal
         aria-labelledby="transition-modal-title"
@@ -99,11 +93,11 @@ export default function ModalAgregarMiembroEquipo({username, equipo, updateModal
         <Fade in={open}>
           <Box sx={style}>
             <form onSubmit={(e) => { handleMiembroSubmit(e)}}>
-            <TextField id="outlined-basic" name="miembro" label="Nombre Miembro" variant="outlined" />
+            <TextField id="outlined-basic" name="nombreEquipo" label="Nombre Equipo" variant="outlined" />
 
-            <IconButton type="submit" color="primary" sx={{ p: '10px' }} aria-label="directions">
-                <Add />
-            </IconButton>
+            <Button type="submit" color="primary" sx={{ p: '10px' }} aria-label="directions">
+                Crear
+            </Button>
             </form>
         </Box>
         </Fade>
