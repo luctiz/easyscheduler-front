@@ -2,11 +2,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import swal from 'sweetalert2';
 
-import {Container, Stack, TextField, Button, Typography} from '@mui/material';
+import {Container, Stack, TextField, Button, Typography, CircularProgress} from '@mui/material';
 import AppHeaderBig from '../components/AppHeaderBig';
 import { NavLink } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import TuiCalendar from '../TuiCalendar';
+import Calendar from '../components/Calendar';
 
 const start = new Date();
 const schedules = [
@@ -35,7 +35,7 @@ const schedules = [
     category: "time",
     isVisible: true,
     title: "Nombre Tarea",
-    id: "2",
+    id: "3",
     body: "Nombre Evento",
     start: new Date(new Date().setHours(start.getHours() -4)),
     end: new Date(new Date().setHours(start.getHours() - 2))
@@ -44,23 +44,7 @@ const schedules = [
 
 
 
-var calendars = [
-  {
-    id: "1",
-    name: "My Calendar",
-    color: "#ffffff",
-  },
-  {
-    id: "2",
-    name: "Company",
-    color: "#ffffff",
-  },
-  {
-    id: "3",
-    name: "Nombre Equipo",
-    color: "#ffffff",
-  }
-];
+var calendars;
 
 function djb2(str){
   var hash = 5381;
@@ -72,72 +56,97 @@ function djb2(str){
 
 function hashStringToColor(str) {
   var hash = djb2(str);
-  var r = (hash & 0xFF0000) >> 16;
-  var g = (hash & 0x00FF00) >> 8;
-  var b = hash & 0x0000FF;
-  return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
+
+  var rgb = [0,0,0];
+   rgb[0] = (hash & 0xFF0000) >> 16;
+   rgb[1] = (hash & 0x00FF00) >> 8;
+   rgb[2] = hash & 0x0000FF;
+
+  // saturate:
+  var max, min;
+
+    if (rgb[0] > rgb[1])
+    {
+        max = (rgb[0] > rgb[2]) ? 0 : 2
+        min = (rgb[1] < rgb[2]) ? 1 : 2;
+    }
+    else
+    {
+        max = (rgb[1] > rgb[2]) ? 1 : 2;
+        var notmax = 1 + max % 2;
+        min = (rgb[0] < rgb[notmax]) ? 0 : notmax;
+    }
+
+    console.log(rgb[max], rgb[min])
+    rgb[max] = Math.round((rgb[max] + 255)/2);
+    rgb[min] = Math.round((rgb[min])/2);
+    console.log(rgb[max], rgb[min])
+
+
+  return "#" + ("0" + rgb[0].toString(16)).substr(-2) + ("0" + rgb[1].toString(16)).substr(-2) + ("0" + rgb[2].toString(16)).substr(-2);
 }
 
-console.log(calendars)
-
-calendars.forEach((x)=>{
-  x.bgColor = hashStringToColor(x.name); 
-  x.dragBgColor = x.borderColor = x.bgColor })
-
 export default function Dashboard() {
-    let myUsername;
+    let username;
     if (!window.localStorage.getItem("isLoggedIn") || !window.localStorage.getItem("username")){
         window.location.href = "/";
         return;
     } else {
-        myUsername = window.localStorage.getItem("username")
+        username = window.localStorage.getItem("username")
     }
 
-    // const handleSubmit =  async (e) => {
+    const [equipos, setEquipos] = useState(null)
 
-    //     e.preventDefault()
-    //     const form = new FormData(e.currentTarget);
+    const updateEquipos = () => {setEquipos(null)};
+
+
+    if (!equipos){
+        let url = `http://localhost:8080/usuario/${username}`
   
-    //     let url = "xxxxx"
-    //     let data = JSON.stringify({
-    //         "username": form.get("username"), 
-    //         "password": form.get("password")})
-  
-    //     fetch(url, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': "application/json; charset=utf-8"},
-    //       body: data,
-    //     })
-    //     .then((response) => {
-    //       if (response.ok){
-    //         swal.fire({
-    //           title: "Login exitoso", //directamente redireccionar
-    //           icon: "success"});
-    //         updateDashboard();
-    //       } else {
-    //         console.log(response)
-    //         swal.fire({
-    //           title: "Ocurrió un error: ",
-    //           text: response.statusText,
-    //           icon: "error"});
-    //       }})
-    //     .catch((error) => {console.log(error); swal.fire({
-    //       title: "Ocurrió un error: ",
-    //       text: error.message,
-    //       icon: "error"});});
-        
-    //     //setModalOpen(false);
+        fetch(url, {
+          method: 'GET'
+        })
+        .then((response) => {
+          console.log(response)
+          response.json().then(data => {
+          console.log(data)
+
+          if (response.ok){
+            console.log(data);
+            setEquipos(data.equipos.map((el) => el.nombre))
+
+          } else {
+            swal.fire({
+              title: "Ocurrió un error: ",
+              text: data.message,
+              icon: "error"});
+          }
+        })
+        })
+        .catch((error) => {console.log(error); swal.fire({
+          title: "Ocurrió un error: ",
+          text: error.message,
+          icon: "error"});});   
           
-    //   }
+        } else {
+          calendars = equipos.map((a,i) => {return {id: i, name: a, color: "#FFFFFF", bgColor: hashStringToColor(a), borderColor: hashStringToColor(a)}})
+        }
+
 
       return (
         <div style={{display: "flex", width: "100%"}}>
 
-        <div style={{flexDirection: "column", flex: "none", width: "256px", overflow: "hidden", position: "relative"}} ><Sidebar username={myUsername}></Sidebar></div>
+        <div style={{flexDirection: "column", flex: "none", width: "256px", overflow: "hidden", position: "relative"}} ><Sidebar username={username} equipos={equipos} updateEquipos={updateEquipos}></Sidebar></div>
             
 
-        <div style={{flex: "1 1 auto", overflow: "hidden", position: "relative"}}><TuiCalendar schedules={schedules} calendars={calendars}/></div>    
+        <div style={{flex: "1 1 auto", overflow: "hidden", position: "relative"}}>
+          {equipos ? 
+            <Calendar schedules={schedules} 
+              calendars={calendars}/>
+            : <CircularProgress/>}
+          
+                                                                                            
+        </div>    
            
 
         </div>

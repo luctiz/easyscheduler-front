@@ -45,7 +45,6 @@ export default function ModalEquipo({username, equipo}) {
     }).then((response) => {
         console.log(response)
         response.json().then(data => {
-        console.log(data)
         if (response.ok){
             setEquipoData({"lider": data[0].equipos.filter((e) => e.nombre == equipo)[0].lider,
                          "miembros": data.map((usuario) => usuario.nombreUsuario)})

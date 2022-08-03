@@ -7,40 +7,8 @@ import ModalCrearEquipo from './ModalCrearEquipo';
 import swal from 'sweetalert2';
 
 
-export default function ListEquipos({username}){
+export default function ListEquipos({username, equipos, updateEquipos}){
     const [openCollapse, setOpenCollapse] = useState(true)
-
-    const [equipos, setEquipos] = useState(null)
-
-    const updateListEquipos = () => {setEquipos(null)};
-
-
-    if (!equipos){
-        let url = `http://localhost:8080/usuario/${username}`
-  
-        fetch(url, {
-          method: 'GET'
-        })
-        .then((response) => {
-          console.log(response)
-          response.json().then(data => {
-          console.log(data)
-
-          if (response.ok){
-            setEquipos(data.equipos.map((el) => el.nombre))
-          } else {
-            swal.fire({
-              title: "Ocurrió un error: ",
-              text: data.message,
-              icon: "error"});
-          }
-        })
-        })
-        .catch((error) => {console.log(error); swal.fire({
-          title: "Ocurrió un error: ",
-          text: error.message,
-          icon: "error"});});       
-    }
 
     return (
         <List>
@@ -61,7 +29,7 @@ export default function ListEquipos({username}){
                     {equipos.map((equipo) => <ModalEquipo username={username} key={equipo} equipo={equipo}></ModalEquipo>
                     )}
 
-                <ModalCrearEquipo username={username} updateListEquipos={updateListEquipos}/>
+                <ModalCrearEquipo username={username} updateListEquipos={updateEquipos}/>
                 </List>
             </Collapse>
             : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}

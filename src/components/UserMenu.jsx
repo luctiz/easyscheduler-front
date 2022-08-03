@@ -97,8 +97,6 @@ export default function UserMenu({username}) {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem> */}
                     <MenuItem onClick={cerrarSesion}> <Logout style={{transform: "scaleX(-1)"}}/> Cerrar sesión</MenuItem>
                   </MenuList>
                 </ClickAwayListener>

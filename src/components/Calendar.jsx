@@ -2,14 +2,17 @@ import React, { useCallback, useRef , useState} from "react";
 import { render } from "react-dom";
 
 import TUICalendar from "@toast-ui/react-calendar";
-import Calendar from "tui-calendar";
+// import Calendar from "tui-calendar";
 import { ISchedule, ICalendarInfo } from "tui-calendar";
 
 import "tui-calendar/dist/tui-calendar.css";
 import "tui-date-picker/dist/tui-date-picker.css";
 import "tui-time-picker/dist/tui-time-picker.css";
 
-import "./styles.css";
+import "../styles.css";
+import "./Calendar.css";
+import { CircularProgress, Modal } from "@mui/material";
+import Swal from "sweetalert2";
 
 function addDays(date, days) {
   var result = new Date(date);
@@ -21,8 +24,7 @@ const options = {year: 'numeric', month: 'long'};
 const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 
-export default function TuiCalendar({schedules, calendars}){
-
+export default function Calendar({schedules, calendars}){
   const cal = useRef(null);
   const [selectedView, setSelectedView] = useState("month")
   const [currentHeaderDate, setCurrentHeaderDate] = useState((new Date()).toLocaleDateString(undefined, options))
@@ -31,10 +33,30 @@ export default function TuiCalendar({schedules, calendars}){
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
 
-    console.log(e, el.getBoundingClientRect());
+    // console.log(e, el.getBoundingClientRect());
   }, []);
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
+
+    Swal.fire({
+      title: 'Crear evento',
+      focusConfirm: true,
+      input: 'datetime-local',
+      inputPlaceholder: 'Enter your current password...',
+        html:
+          `<input id="newPassword1" type="date" min=${new Date().toISOString().substring(0,10)} /><br />` +
+          '<input id="newPassword2" type="password" placeholder="Confirm your new password..." />' ,
+        type: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: 'grey',
+        confirmButtonText: 'Update!',
+        allowOutsideClick: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to write something!'
+          }
+        }
+    });
     console.log(scheduleData);
 
     const schedule = {
@@ -121,7 +143,8 @@ export default function TuiCalendar({schedules, calendars}){
               selectedView == "day" ? 0 : 6).toLocaleDateString(undefined, options) : ""))
   }
 
-  console.log(selectedView)
+  console.log("CALENDARS:")
+  console.log(calendars)
   return (
     <div >
       
@@ -144,12 +167,15 @@ export default function TuiCalendar({schedules, calendars}){
         view= {selectedView}
         //scheduleView
         taskView={false}
-        useCreationPopup={true}
+        // useCreationPopup= {false}
+        // useDetailPopup= {false}
+        useCreationPopup={false}
         useDetailPopup={true}
         template={templates}
         calendars={calendars}
         schedules={schedules}
         onClickSchedule={onClickSchedule}
+
         onBeforeCreateSchedule={onBeforeCreateSchedule}
         onBeforeDeleteSchedule={onBeforeDeleteSchedule}
         onBeforeUpdateSchedule={onBeforeUpdateSchedule}
