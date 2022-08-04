@@ -27,7 +27,7 @@ const style = {
   p: 4,
 };
 
-export default function ModalEquipo({username, equipo}) {
+export default function ModalEvento({username, equipo}) {
 
   const [equipoData, setEquipoData] = useState(null)
   const [eventosData, setEventosData] = useState(null)
@@ -129,8 +129,6 @@ export default function ModalEquipo({username, equipo}) {
             </ListItemButton>
         </ListItem> 
 
-
-
         {equipoData ? 
         <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
                 {equipoData.miembros.map((miembro) => 
@@ -154,10 +152,19 @@ export default function ModalEquipo({username, equipo}) {
         : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}
 
         <Divider></Divider>
-          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} ></ListEventosEquipo>
+        <ListItem disablePadding>
+            <ListItemButton >
+            <ListItemIcon>
+                <GroupsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Eventos" />
+            </ListItemButton>
+        </ListItem> 
+
+        <ListEventosEquipo equipo={equipo} equipoData={equipoData}></ListEventosEquipo>
         </List>
         </Box>
-        </Fade> 
+        </Fade>
       </Modal>
     </div>
   );
