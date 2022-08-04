@@ -44,7 +44,6 @@ export default function ModalEquipo({username, equipo}) {
     fetch(url, {
         method: 'GET'
     }).then((response) => {
-        console.log(response)
         response.json().then(data => {
         if (response.ok){
             setEquipoData({"lider": data[0].equipos.filter((e) => e.nombre == equipo)[0].lider,
@@ -128,8 +127,6 @@ export default function ModalEquipo({username, equipo}) {
             <ListItemText primary="Miembros" />
             </ListItemButton>
         </ListItem> 
-
-
 
         {equipoData ? 
         <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>

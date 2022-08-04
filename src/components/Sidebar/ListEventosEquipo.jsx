@@ -5,10 +5,15 @@ import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListIt
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 import { fireModalCrearEvento } from '../../events';
-import { Add } from '@mui/icons-material';
+import { Add, Remove } from '@mui/icons-material';
+
+import swal from 'sweetalert2';
 
 export default function ListEventosEquipo({username, equipo,equipoData, updateEquipos}) {
+
     const [eventosEquipo, setEventosEquipo] = useState(null);
+
+    const updateModal = () => {setEventosEquipo(null)}
 
     if (!eventosEquipo){
         let url = `http://localhost:8080/evento/equipo//${equipo}`
@@ -32,37 +37,30 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
     }
 
 
-  // return (
-  //   eventosEquipo ? 
-  //   (eventosEquipo.length != 0 ? <TableContainer component={Paper}>
-  //     <Table /* sx={{ minWidth: 650 }}  */aria-label="simple table">
-  //       <TableHead>
-  //         <TableRow>
-  //           <TableCell>Nombre</TableCell>
-  //           <TableCell align="right">Fecha</TableCell>
-  //         </TableRow>
-  //       </TableHead>
-  //       <TableBody>
-  //         {eventosEquipo.map((row) => (
-  //           <TableRow
-  //             key={row.nombre}
-  //             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-  //           >
-  //             <TableCell component="th" scope="row">
-  //               {row.nombre}
-  //             </TableCell>
-  //             {/* <TableCell align="right">{row.nombre}</TableCell> */}
-  //             <TableCell align="right">{row.fecha}</TableCell>
-  //           </TableRow>
-  //         ))}
-  //       </TableBody>
-  //     </Table>
-  //   </TableContainer>
-  //   : <span style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</span>)
-  //   : <CircularProgress/>
-  // );
-  console.log("EQUIPODATA")
-  console.log(equipoData)
+    const handleBorrarEvento = (nombreFecha) => {
+        let url = `http://localhost:8080/evento/${nombreFecha}`
+    
+        fetch(url, {method: 'DELETE'}
+            ).then((response) => {
+            console.log(response)
+            if (response.ok){
+              swal.fire({
+                  title: "Se borró el evento exitosamente",
+                  icon: "success"
+              }).then(() => updateModal())
+            } else {
+            response.json().then(data => {
+            swal.fire({
+                title: "Ocurrió un error: ",
+                text: data.message,
+                icon: "error"});
+            })}
+        }).catch((error) => {console.log(error); swal.fire({
+            title: "Ocurrió un error: ",
+            text: error.message,
+            icon: "error"});});       
+      }
+    
 
   return (<>
     <ListItem disablePadding key="eventos">
@@ -84,11 +82,17 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
                       </ListItemIcon>
                       <ListItemText primary={evento.nombre} />
                       <ListItemText primary={evento.fecha}/> 
+                      {equipoData.lider == username ? 
+                      <ListItemIcon onClick={()=> handleBorrarEvento(evento.nombreFecha)}>
+                        <IconButton color="error">
+                          <Remove/>
+                        </IconButton>
+                      </ListItemIcon> : ""}
                   </ListItemButton>)
           : <span style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</span>,
           
           (equipoData.lider == username) ? 
-            <ListItemButton onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo],() => setEventosEquipo(null))} key="agregar">
+            <ListItemButton onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} key="agregar">
               <ListItemIcon>
               <Add />
               </ListItemIcon>

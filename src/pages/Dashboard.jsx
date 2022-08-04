@@ -77,10 +77,8 @@ function hashStringToColor(str) {
         min = (rgb[0] < rgb[notmax]) ? 0 : notmax;
     }
 
-    console.log(rgb[max], rgb[min])
     rgb[max] = Math.round((rgb[max] + 255)/2);
     rgb[min] = Math.round((rgb[min])/2);
-    console.log(rgb[max], rgb[min])
 
 
   return "#" + ("0" + rgb[0].toString(16)).substr(-2) + ("0" + rgb[1].toString(16)).substr(-2) + ("0" + rgb[2].toString(16)).substr(-2);
