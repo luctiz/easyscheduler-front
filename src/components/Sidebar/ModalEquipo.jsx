@@ -12,6 +12,7 @@ import Remove from '@mui/icons-material/Remove';
 
 import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider} from "@mui/material";
 import ModalAgregarMiembroEquipo from './ModalAgregarMiembroEquipo';
+import ListEventosEquipo from './ListEventosEquipo';
 
 
 const style = {
@@ -147,12 +148,6 @@ export default function ModalEquipo({username, equipo}) {
                 </ListItemButton>)}
 
             {(equipoData.lider == username) ? <ModalAgregarMiembroEquipo equipo={equipo} username={username} updateModalEquipo={updateModal}></ModalAgregarMiembroEquipo> : ""}
-            {/* <ListItemButton  onClick={(e) => {e.stopPropagation()}}>
-                <ListItemIcon>
-                <Add />
-                </ListItemIcon>
-                <ListItemText primary="Agregar" />
-            </ListItemButton> */}
         </List>
         : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}
 
@@ -166,25 +161,7 @@ export default function ModalEquipo({username, equipo}) {
             </ListItemButton>
         </ListItem> 
 
-        {eventosData ? <></>
-        // <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
-        //         {equipoData.miembros.map((miembro) => 
-        //         <ListItemButton key={miembro}>
-        //             <ListItemIcon>
-        //             <GroupIcon></GroupIcon>
-        //             </ListItemIcon>
-        //             <ListItemText primary={miembro} />
-        //             {(equipoData.lider == miembro) ? <ListItemText primary="Lider"/> : ""}
-        //         </ListItemButton>)}
-
-        //     <ListItemButton  onClick={(e) => {e.stopPropagation()}}>
-        //         <ListItemIcon>
-        //         <Add />
-        //         </ListItemIcon>
-        //         <ListItemText primary="Agregar" />
-        //     </ListItemButton>
-        // </List>
-        : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}
+        <ListEventosEquipo equipo={equipo} ></ListEventosEquipo>
         </List>
         </Box>
         </Fade>
