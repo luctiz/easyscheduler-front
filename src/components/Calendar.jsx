@@ -12,7 +12,7 @@ import "tui-time-picker/dist/tui-time-picker.css";
 import "../styles.css";
 import "./Calendar.css";
 import { CircularProgress, Modal } from "@mui/material";
-import Swal from "sweetalert2";
+import swal from "sweetalert2";
 
 function addDays(date, days) {
   var result = new Date(date);
@@ -24,7 +24,7 @@ const options = {year: 'numeric', month: 'long'};
 const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 
-export default function Calendar({schedules, calendars}){
+export default function Calendar({username, schedules, calendars, updateEquipos}){
   const cal = useRef(null);
   const [selectedView, setSelectedView] = useState("month")
   const [currentHeaderDate, setCurrentHeaderDate] = useState((new Date()).toLocaleDateString(undefined, options))
@@ -38,43 +38,69 @@ export default function Calendar({schedules, calendars}){
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
 
-    Swal.fire({
+    swal.fire({
       title: 'Crear evento',
       focusConfirm: true,
-      input: 'datetime-local',
-      inputPlaceholder: 'Enter your current password...',
-        html:
-          `<input id="newPassword1" type="date" min=${new Date().toISOString().substring(0,10)} /><br />` +
-          '<input id="newPassword2" type="password" placeholder="Confirm your new password..." />' ,
-        type: 'warning',
-        showCancelButton: true,
-        cancelButtonColor: 'grey',
-        confirmButtonText: 'Update!',
-        allowOutsideClick: true,
-        inputValidator: (value) => {
-          if (!value) {
-            return 'You need to write something!'
-          }
+      html:
+      '<input id="nombreEquipo" class="swal2-input" type="text" placeholder="Nombre equipo..." /><br/>'+
+        '<input id="nombreEvento" class="swal2-input" type="text" placeholder="Nombre Evento..." ><br />'+
+        `<input id="fechaEvento" class="swal2-input" type="date" min=${new Date().toISOString().substring(0,10)} /><br />`,
+      showCancelButton: true,
+      cancelButtonColor: 'grey',
+      confirmButtonText: 'Update!',
+      preConfirm: function () {
+        return new Promise(function (resolve) {
+          resolve({
+            "nombreEquipo": document.getElementById("nombreEquipo").value,
+            "nombreEvento": document.getElementById("nombreEvento").value,
+            "fechaEvento": document.getElementById("fechaEvento").value.replace("/","-")
+        })
+        })
+      }
+    }).then(function (result) {
+      console.log(result)
+      fetch(`http://localhost:8080/evento/${result.value.nombreEvento}&${result.value.fechaEvento}&${result.value.nombreEquipo}&${username}`, {
+        method: 'POST'
+    }).then((response) => {
+        console.log(response)
+        response.json().then(data => {
+        console.log(data)
+        if (response.ok){
+            swal.fire({
+                title: "Se creo el evento exitosamente",
+                icon: "success"
+            }).then(() => updateEquipos());
+        } else {
+        swal.fire({
+            title: "Ocurrió un error: ",
+            text: data.message,
+            icon: "error"});
         }
-    });
+    })})
+    }).catch((error) => {console.log(error); swal.fire({
+      title: "Ocurrió un error: ",
+      text: error.message,
+      icon: "error"});});   
+
+    
     console.log(scheduleData);
 
-    const schedule = {
-      id: String(Math.random()),
-      title: scheduleData.title,
-      isAllDay: scheduleData.isAllDay,
-      start: scheduleData.start,
-      end: scheduleData.end,
-      category: scheduleData.isAllDay ? "allday" : "time",
-      dueDateClass: "",
-      location: scheduleData.location,
-      raw: {
-        class: scheduleData.raw["class"]
-      },
-      state: scheduleData.state
-    };
+    // const schedule = {
+    //   id: String(Math.random()),
+    //   title: scheduleData.title,
+    //   isAllDay: false,
+    //   start: scheduleData.start,
+    //   end: scheduleData.end,
+    //   category: scheduleData.isAllDay ? "allday" : "time",
+    //   dueDateClass: "",
+    //   location: scheduleData.location,
+    //   raw: {
+    //     class: scheduleData.raw["class"]
+    //   },
+    //   state: scheduleData.state
+    // };
 
-    cal.current.calendarInst.createSchedules([schedule]);
+    // cal.current.calendarInst.createSchedules([schedule]);
   }, []);
 
   const onBeforeDeleteSchedule = useCallback((res) => {

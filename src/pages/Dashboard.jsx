@@ -142,7 +142,9 @@ export default function Dashboard() {
         <div style={{flex: "1 1 auto", overflow: "hidden", position: "relative"}}>
           {equipos ? 
             <Calendar schedules={schedules} 
-              calendars={calendars}/>
+              calendars={calendars}
+              updateEquipos={updateEquipos}
+              username={username}/>
             : <CircularProgress/>}
           
                                                                                             
