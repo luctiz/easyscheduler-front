@@ -37,17 +37,27 @@ export default function Calendar({username, schedules, calendars, updateEquipos}
   }, []);
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
-
+    let clicked_date = scheduleData.start._date.toISOString().substr(0,10);
+    let current_date = new Date().toISOString().substring(0,10);
     swal.fire({
       title: 'Crear evento',
       focusConfirm: true,
       html:
-      '<input id="nombreEquipo" class="swal2-input" type="text" placeholder="Nombre equipo..." /><br/>'+
-        '<input id="nombreEvento" class="swal2-input" type="text" placeholder="Nombre Evento..." ><br />'+
-        `<input id="fechaEvento" class="swal2-input" type="date" min=${new Date().toISOString().substring(0,10)} /><br />`,
+      
+        `<h4 class="swal-content" style="margin-bottom:2px"> Equipo </h4>
+        <select id="nombreEquipo" style="margin-top:2px" class="swal2-input" name="select">
+        <option value="..." disabled selected> ... </option>`
+        + calendars.map((x) => `<option value="${x.name}">${x.name}</option>`).reduce((x,y) => x+y) + 
+        `</select> <br/>
+        <h4 class="swal-content" style="margin-bottom:2px">Nombre</h4>
+        <input id="nombreEvento" class="swal2-input" style="margin-top:2px" type="text" placeholder="Nombre Evento..." ><br />
+        <h4 class="swal-content" style="margin-bottom:2px">Fecha</h4>
+        <input id="fechaEvento" style="margin-top:2px" class="swal2-input" type="date" value=${clicked_date < current_date ? current_date: clicked_date} min=${current_date} />
+        <br />`,
       showCancelButton: true,
       cancelButtonColor: 'grey',
-      confirmButtonText: 'Update!',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Crear',
       preConfirm: function () {
         return new Promise(function (resolve) {
           resolve({
@@ -59,25 +69,29 @@ export default function Calendar({username, schedules, calendars, updateEquipos}
       }
     }).then(function (result) {
       console.log(result)
-      fetch(`http://localhost:8080/evento/${result.value.nombreEvento}&${result.value.fechaEvento}&${result.value.nombreEquipo}&${username}`, {
-        method: 'POST'
-    }).then((response) => {
-        console.log(response)
-        response.json().then(data => {
-        console.log(data)
-        if (response.ok){
-            swal.fire({
-                title: "Se creo el evento exitosamente",
-                icon: "success"
-            }).then(() => updateEquipos());
-        } else {
-        swal.fire({
-            title: "Ocurrió un error: ",
-            text: data.message,
-            icon: "error"});
-        }
-    })})
-    }).catch((error) => {console.log(error); swal.fire({
+      if (result.isConfirmed){
+          fetch(`http://localhost:8080/evento/${result.value.nombreEvento}&${result.value.fechaEvento}&${result.value.nombreEquipo}&${username}`, {
+            method: 'POST'
+          }).then((response) => {
+            console.log(response)
+            response.json().then(data => {
+              console.log(data)
+              if (response.ok){
+                swal.fire({
+                  title: "Se creo el evento exitosamente",
+                  icon: "success"
+                }).then(() => updateEquipos());
+              } else {
+                  swal.fire({
+                  title: "Ocurrió un error: ",
+                  text: data.message,
+                  icon: "error"});
+              }
+              })
+          })
+      }
+    }).then(() => document.querySelectorAll(".tui-full-calendar-month-guide-block").forEach((x) => x.remove()))
+    .catch((error) => {console.log(error); swal.fire({
       title: "Ocurrió un error: ",
       text: error.message,
       icon: "error"});});   
