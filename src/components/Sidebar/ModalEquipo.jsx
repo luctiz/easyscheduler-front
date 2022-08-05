@@ -5,14 +5,13 @@ import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import GroupIcon from '@mui/icons-material/Group';
-import GroupsIcon from '@mui/icons-material/Group';
+
 import { Add, Update} from "@mui/icons-material";
 import swal from 'sweetalert2';
-import Remove from '@mui/icons-material/Remove';
 
 import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider} from "@mui/material";
-import ModalAgregarMiembroEquipo from './ModalAgregarMiembroEquipo';
 import ListEventosEquipo from './ListEventosEquipo';
+import ListMiembrosEquipo from './ListMiembrosEquipo';
 
 
 const style = {
@@ -30,7 +29,6 @@ const style = {
 export default function ModalEquipo({username, equipo}) {
 
   const [equipoData, setEquipoData] = useState(null)
-  const [eventosData, setEventosData] = useState(null)
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -60,41 +58,7 @@ export default function ModalEquipo({username, equipo}) {
         icon: "error"});});       
   }
   
-  const handleBorrarMiembro = (miembro) => {
-    let url = `http://localhost:8080/equipo/removerMiembro/${equipo}&${equipoData.lider}`
-    let data = 
-      [miembro]
-    ;
-
-    let body = JSON.stringify(data)
-
-    fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': "application/json; charset=utf-8"},
-        body: body}
-        ).then((response) => {
-        console.log(response)
-        response.json().then(data => {
-        console.log(data)
-        if (response.ok){
-          swal.fire({
-              title: "Se borró el miembro exitosamente",
-              icon: "success"
-          }).then(() => updateModal())
-          //setEquipoData({"lider": data[0].equipos.filter((e) => e.nombre == equipo)[0].lider,
-          //             "miembros": data.map((usuario) => usuario.nombreUsuario)})
-        } else {
-        swal.fire({
-            title: "Ocurrió un error: ",
-            text: data.message,
-            icon: "error"});
-        }
-    })}).catch((error) => {console.log(error); swal.fire({
-        title: "Ocurrió un error: ",
-        text: error.message,
-        icon: "error"});});       
-  }
+  
 
   return (
     <div>
@@ -117,41 +81,13 @@ export default function ModalEquipo({username, equipo}) {
       >
         <Fade in={open}>
           <Box sx={style}>
+          <span className="css-10hburv-MuiTypography-root">{equipo}</span>
           <List>
 
-        <ListItem disablePadding>
-            <ListItemButton >
-            <ListItemIcon>
-                <GroupsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Miembros" />
-            </ListItemButton>
-        </ListItem> 
-
-        {equipoData ? 
-        <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
-                {equipoData.miembros.map((miembro) => 
-                <ListItemButton key={miembro}>
-                    <ListItemIcon>
-                    <GroupIcon></GroupIcon>
-                    </ListItemIcon>
-                    <ListItemText primary={miembro} />
-                    {(equipoData.lider == miembro) 
-                    ? <ListItemText primary="Lider"/> 
-                    : (equipoData.lider == username ? 
-                      <ListItemIcon onClick={()=> handleBorrarMiembro(miembro)}>
-                        <IconButton color="error">
-                          <Remove/>
-                        </IconButton>
-                      </ListItemIcon> : "")}
-                </ListItemButton>)}
-
-            {(equipoData.lider == username) ? <ModalAgregarMiembroEquipo equipo={equipo} username={username} updateModalEquipo={updateModal}></ModalAgregarMiembroEquipo> : ""}
-        </List>
-        : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}
+          <ListMiembrosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListMiembrosEquipo>
 
         <Divider></Divider>
-          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} ></ListEventosEquipo>
+          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListEventosEquipo>
         </List>
         </Box>
         </Fade> 

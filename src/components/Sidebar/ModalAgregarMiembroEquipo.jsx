@@ -39,20 +39,20 @@ export default function ModalAgregarMiembroEquipo({username, equipo, updateModal
     e.stopPropagation()
     const form = new FormData(e.currentTarget);
 
-    let url = `http://localhost:8080/equipo/agregarMiembro/${form.get("miembro")}`
+    let url = `http://localhost:8080/equipo/agregarMiembro/${equipo}&${form.get("miembro")}`
 
-    let data = {
-        "lider": username,
-        "nombre": equipo
-    };
+    // let data = {
+    //     "lider": username,
+    //     "nombre": equipo
+    // };
 
-    let body = JSON.stringify(data)
-    console.log(body)
+    // let body = JSON.stringify(data)
+    // console.log(body)
 
     fetch(url, {
-        headers: {
-            'Content-Type': "application/json"},
-        body: body,
+        // headers: {
+        //     'Content-Type': "application/json"},
+        // body: body,
         method: 'PATCH'
     }).then((response) => {
         console.log(response)

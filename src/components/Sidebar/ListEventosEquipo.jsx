@@ -38,7 +38,7 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
 
 
     const handleBorrarEvento = (nombreFecha) => {
-        let url = `http://localhost:8080/evento/${nombreFecha}`
+        let url = `http://localhost:8080/evento/${nombreFecha}&${username}`
     
         fetch(url, {method: 'DELETE'}
             ).then((response) => {
