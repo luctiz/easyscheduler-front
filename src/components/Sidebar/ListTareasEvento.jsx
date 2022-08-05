@@ -7,7 +7,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
 
@@ -16,7 +15,7 @@ import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
 
-export default function ListTareasEvento({username, equipo,equipoData, updateEquipos }) {
+export default function ListTareasEvento({username, equipo,equipoData, eventoData, updateEquipo }) {
 
   return (
     <TableContainer component={Paper}>
@@ -33,7 +32,7 @@ export default function ListTareasEvento({username, equipo,equipoData, updateEqu
           </TableRow>
         </TableHead>
         <TableBody>
-          {equipoData ? equipoData.tareas.map((row) => (
+          {eventoData ? eventoData.tareas.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -52,7 +51,7 @@ export default function ListTareasEvento({username, equipo,equipoData, updateEqu
         </TableBody>
       </Table>
       {(equipoData.lider == username) ? 
-            <ListItemButton onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateEquipos)} key="agregar">
+            <ListItemButton onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateEquipo)} key="agregar">
               <ListItemIcon>
               <Add />
               </ListItemIcon>

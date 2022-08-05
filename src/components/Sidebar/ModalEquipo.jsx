@@ -82,13 +82,10 @@ export default function ModalEquipo({username, equipo}) {
         <Fade in={open}>
           <Box sx={style}>
           <span className="css-10hburv-MuiTypography-root">{equipo}</span>
-          <List>
 
           <ListMiembrosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListMiembrosEquipo>
-
-        <Divider></Divider>
+          <Divider></Divider>
           <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListEventosEquipo>
-        </List>
         </Box>
         </Fade> 
       </Modal>

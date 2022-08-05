@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 import { fireModalCrearEvento } from '../../events';
 import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
+import ModalEvento from './ModalEvento';
 
-export default function ListEventosEquipo({username, equipo,equipoData, updateEquipos}) {
+export default function ListEventosEquipo({username, equipo,equipoData, updateEquipo}) {
 
     const [eventosEquipo, setEventosEquipo] = useState(null);
 
@@ -36,30 +36,6 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
             icon: "error"});});     
     }
 
-
-    const handleBorrarEvento = (nombreFecha) => {
-        let url = `http://localhost:8080/evento/${nombreFecha}&${username}`
-    
-        fetch(url, {method: 'DELETE'}
-            ).then((response) => {
-            console.log(response)
-            if (response.ok){
-              swal.fire({
-                  title: "Se borró el evento exitosamente",
-                  icon: "success"
-              }).then(() => updateModal())
-            } else {
-            response.json().then(data => {
-            swal.fire({
-                title: "Ocurrió un error: ",
-                text: data.message,
-                icon: "error"});
-            })}
-        }).catch((error) => {console.log(error); swal.fire({
-            title: "Ocurrió un error: ",
-            text: error.message,
-            icon: "error"});});       
-      }
     
 
   return (<>
@@ -75,20 +51,9 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
     {(eventosEquipo && equipoData) ? 
     <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
       { [(eventosEquipo.length != 0) ? 
-                  eventosEquipo.map((evento) => 
-                  <ListItemButton key={evento.nombreFecha}>
-                      <ListItemIcon>
-                      <WhereToVoteIcon/>
-                      </ListItemIcon>
-                      <ListItemText primary={evento.nombre} />
-                      <ListItemText primary={evento.fecha}/> 
-                      {equipoData.lider == username ? 
-                      <ListItemIcon onClick={()=> handleBorrarEvento(evento.nombreFecha)}>
-                        <IconButton color="error">
-                          <Remove/>
-                        </IconButton>
-                      </ListItemIcon> : ""}
-                  </ListItemButton>)
+                  eventosEquipo.map((eventoData) => <ModalEvento username={username} equipo={equipo} equipoData={equipoData} 
+                  updateEquipo={updateEquipo} eventoData={eventoData}></ModalEvento>
+                  )
           : <span style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</span>,
           
           (equipoData.lider == username) ? 
