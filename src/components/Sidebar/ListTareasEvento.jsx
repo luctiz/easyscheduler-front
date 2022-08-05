@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
 
-import { fireModalCrearEvento } from '../../events';
+import { fireModalCrearEvento, fireModalCrearTarea } from '../../events';
 import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
@@ -24,10 +24,10 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
           <TableRow>
             <TableCell>Nombre</TableCell>
             <TableCell align="right">Descripcion</TableCell>
-            <TableCell align="right">Inicio&nbsp;(g)</TableCell>
-            <TableCell align="right">Fin&nbsp;(g)</TableCell>
+            <TableCell align="right">Inicio</TableCell>
+            <TableCell align="right">Fin</TableCell>
             <TableCell align="right">Asignado a</TableCell>
-            <TableCell align="right">Peso&nbsp;(g)</TableCell>
+            <TableCell align="right">Peso</TableCell>
             <TableCell align="right">Estado</TableCell>
           </TableRow>
         </TableHead>
@@ -38,12 +38,12 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.nombre}
               </TableCell>
-              <TableCell align="right">{row.nombre}</TableCell>
               <TableCell align="right">{row.descripcion}</TableCell>
               <TableCell align="right">{row.horaInicio}</TableCell>
               <TableCell align="right">{row.horaFin}</TableCell>
+              <TableCell align="right">{row.asignado}</TableCell>
               <TableCell align="right">{row.peso}</TableCell>
               <TableCell align="right">{row.estado}</TableCell>
             </TableRow>
@@ -51,7 +51,7 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
         </TableBody>
       </Table>
       {(equipoData.lider == username) ? 
-            <ListItemButton onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateEquipo)} key="agregar">
+            <ListItemButton onClick={() => fireModalCrearTarea(username, eventoData.nombreFecha, updateEquipo)} key="agregar">
               <ListItemIcon>
               <Add />
               </ListItemIcon>
