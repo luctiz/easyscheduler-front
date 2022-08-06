@@ -63,7 +63,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
 
   return (
     <div>
-      <ListItemButton onClick={handleOpen} key={eventoData.nombreFecha}>
+      <ListItemButton onClick={handleOpen}>
           <ListItemIcon>
           <WhereToVoteIcon/>
           </ListItemIcon>
@@ -76,7 +76,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
             </IconButton>
           </ListItemIcon> : ""}
       </ListItemButton>
-     <Modal
+     <Modal key="myModal"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
@@ -97,7 +97,10 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
             Fecha: {eventoData.fecha} 
           </Typography>
 
-          <h4 class="swal-content" style={{marginBottom:"2px"}}>Tareas</h4>
+
+          <Typography style={{margin:"5px", marginBottom:"2px"}} variant="h6">
+            Tareas
+          </Typography>
            <ListTareasEvento username={username} equipo={equipo} equipoData={equipoData} eventoData={eventoData} updateEquipo={updateEquipo}></ListTareasEvento>
         </Box>
         </Fade>

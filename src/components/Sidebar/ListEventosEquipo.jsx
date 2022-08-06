@@ -37,9 +37,8 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
     }
 
     
-
   return (<>
-    <ListItem disablePadding key="eventos">
+    <ListItem disablePadding>
             <ListItemButton >
             <ListItemIcon>
                 <CalendarTodayIcon />
@@ -51,18 +50,22 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
     {(eventosEquipo && equipoData) ? 
     <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
       { [(eventosEquipo.length != 0) ? 
-                  eventosEquipo.map((eventoData) => <ModalEvento username={username} equipo={equipo} equipoData={equipoData} 
-                  updateEquipo={updateEquipo} eventoData={eventoData}></ModalEvento>
+                  eventosEquipo.map((eventoData) => 
+                  <ModalEvento key={eventoData.nombreFecha} 
+                    username={username} equipo={equipo} equipoData={equipoData} eventoData={eventoData} updateEquipo={updateModal}></ModalEvento>
                   )
           : <span style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</span>,
           
           (equipoData.lider == username) ? 
-            <ListItemButton onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} key="agregar">
-              <ListItemIcon>
-              <Add />
-              </ListItemIcon>
-              <ListItemText primary="Agregar" />
-          </ListItemButton> 
+            <ListItem key="agregar">
+                <ListItemButton
+                        onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} >
+                <ListItemIcon>
+                <Add />
+                </ListItemIcon>
+                <ListItemText primary="Agregar" />
+            </ListItemButton> 
+            </ListItem>
           : ""]
           }
         

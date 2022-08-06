@@ -86,7 +86,7 @@ export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction)
       <input id="horaFinTarea" style="margin-top:2px" class="swal2-input" type="time" value=${((d) => { return d.getHours() + ":" + d.getMinutes()}) (new Date(new Date(new Date().getTime() + 60*60*1000)))      } />
 
       <h4 class="swal-content" style="margin-bottom:2px"> Peso </h4>
-      <input id="pesoTarea" class="swal2-input" style="margin-top:2px" type="number" placeholder="Peso de la tarea..." value=1 ><br />
+      <input id="pesoTarea" class="swal2-input" style="margin-top:2px" type="number" placeholder="Peso de la tarea..." value=1 min=1><br />
       <br />`,
     showCancelButton: true,
     cancelButtonColor: 'grey',

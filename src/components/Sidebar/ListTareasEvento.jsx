@@ -15,8 +15,9 @@ import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
 
-export default function ListTareasEvento({username, equipo,equipoData, eventoData, updateEquipo }) {
-
+export default function ListTareasEvento({username, equipo,equipoData, eventoData, updateEquipo}) {
+  console.log(username, equipo,equipoData, eventoData)
+  console.log(eventoData)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 750 }} aria-label="simple table">
@@ -34,15 +35,15 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
         <TableBody>
           {eventoData ? eventoData.tareas.map((row) => (
             <TableRow
-              key={row.name}
+              key={JSON.stringify(row._id)}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {row.nombre}
               </TableCell>
               <TableCell align="right">{row.descripcion}</TableCell>
-              <TableCell align="right">{row.horaInicio}</TableCell>
-              <TableCell align="right">{row.horaFin}</TableCell>
+              <TableCell align="right">{row.horaInicio.substring(0,5)}</TableCell>
+              <TableCell align="right">{row.horaFin.substring(0,5)}</TableCell>
               <TableCell align="right">{row.asignado}</TableCell>
               <TableCell align="right">{row.peso}</TableCell>
               <TableCell align="right">{row.estado}</TableCell>
