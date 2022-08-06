@@ -10,14 +10,39 @@ import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
 
-import { fireModalCrearEvento, fireModalCrearTarea } from '../../events';
+import { fireModalAsignarTarea, fireModalCrearEvento, fireModalCrearTarea } from '../../events';
 import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
 
 export default function ListTareasEvento({username, equipo,equipoData, eventoData, updateEquipo}) {
-  console.log(username, equipo,equipoData, eventoData)
-  console.log(eventoData)
+  
+  const handleBorrarTarea = (IDTAREA) => {
+    let url = `http://localhost:8080//tarea/borrarTarea/${IDTAREA}`
+
+
+    fetch(url, {method: 'PUT'})
+        .then((response) => {
+        response.json().then(data => {
+        console.log(data)
+        if (response.ok){
+          swal.fire({
+              title: "Se borró la tarea exitosamente",
+              icon: "success"
+          }).then(() => updateEquipo())
+
+        } else {
+        swal.fire({
+            title: "Ocurrió un error: ",
+            text: data.message,
+            icon: "error"});
+        }
+    })}).catch((error) => {console.log(error); swal.fire({
+        title: "Ocurrió un error: ",
+        text: error.message,
+        icon: "error"});});       
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 750 }} aria-label="simple table">
@@ -30,6 +55,7 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
             <TableCell align="right">Asignado a</TableCell>
             <TableCell align="right">Peso</TableCell>
             <TableCell align="right">Estado</TableCell>
+            {equipoData.lider == username? <TableCell >Borrar</TableCell> : ""}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,9 +70,26 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
               <TableCell align="right">{row.descripcion}</TableCell>
               <TableCell align="right">{row.horaInicio.substring(0,5)}</TableCell>
               <TableCell align="right">{row.horaFin.substring(0,5)}</TableCell>
-              <TableCell align="right">{row.asignado}</TableCell>
+              {equipoData.lider == username ? 
+                <TableCell >                     
+                <ListItem style={{cursor: "pointer", border: "1px solid gray", borderRadius: "5px"}}onClick={()=> fireModalAsignarTarea(row.asignado, equipoData.miembros)}>
+                  <ListItemText primary={row.asignado} />
+                  </ListItem> 
+                </TableCell>
+                :<TableCell align="right">{row.asignado}</TableCell>
+}
               <TableCell align="right">{row.peso}</TableCell>
               <TableCell align="right">{row.estado}</TableCell>
+              {equipoData.lider == username ? 
+                <TableCell >                     
+                <ListItemIcon onClick={()=> handleBorrarTarea(`${eventoData.nombreFecha}&${row.nombre}`)}>
+                        <IconButton color="error">
+                          <Remove/>
+                        </IconButton>
+                      </ListItemIcon> 
+                </TableCell>: ""}
+                      
+                      
             </TableRow>
           )) : <CircularProgress></CircularProgress>}
         </TableBody>

@@ -139,3 +139,63 @@ export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction)
     text: error.message,
     icon: "error"});});   
   }
+
+
+  export function fireModalAsignarTarea(defaultvalue, miembrosList){
+    swal.fire({
+      title: 'Asignar tarea a miembro',
+      focusConfirm: true,
+      html:
+      
+      `<select id="miembroAsignar" style="margin-top:2px" class="swal2-input" name="select">
+      `
+      + miembrosList.map((x) => (x==defaultvalue?`<option value="${x}" selected>${x}</option>`:`<option value="${x}">${x}</option>`)).reduce((x,y) => x+y),
+    
+      showCancelButton: true,
+      cancelButtonColor: 'grey',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Asignar',
+      didOpen: () => { 
+    
+      let el = document.activeElement;
+      if (!el) return;
+      el.removeAttribute("tabIndex")
+      el.classList.add("js-swal-fixed") },
+      preConfirm: function () {
+        return new Promise(function (resolve) {
+          resolve({
+            "miembro": document.getElementById("miembroAsignar").value,
+        })
+        })
+      }
+    }).then(function (result) {
+      return;
+      console.log(result)
+      if (result.isConfirmed){
+        let v = result.value;
+          fetch(`http://localhost:8080/tarea/${nombreFechaEvento}&${v.nombre}&${v.descripcion}&${v.horaInicio}&${v.horaFin}&${username}&${v.peso}`, {
+            method: 'PUT'
+          }).then((response) => {
+            console.log(response)
+            response.json().then(data => {
+              console.log(data)
+              if (response.ok){
+                swal.fire({
+                  title: "Se creo la tarea exitosamente",
+                  icon: "success"
+                }).then(() => updateFunction());
+              } else {
+                  swal.fire({
+                  title: "Ocurrió un error: ",
+                  text: data.message,
+                  icon: "error"});
+              }
+              })
+          })
+      }
+    })
+    .catch((error) => {console.log(error); swal.fire({
+      title: "Ocurrió un error: ",
+      text: error.message,
+      icon: "error"});});   
+    }
