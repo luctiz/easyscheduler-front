@@ -15,6 +15,7 @@ import { CircularProgress, Modal } from "@mui/material";
 import swal from "sweetalert2";
 
 import { fireModalCrearEvento } from "../events";
+import { useEffect } from "react";
 
 function addDays(date, days) {
   var result = new Date(date);
@@ -26,15 +27,22 @@ const options = {year: 'numeric', month: 'long'};
 const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 
-export default function Calendar({username, schedules, calendars, updateEquipos}){
+export default function Calendar({username, schedules, 
+  equiposColorsData, updateEquipos,
+updateCal,
+setUpdateCal}){
+  console.log("CALENDAR LOADED")
+  console.log(equiposColorsData)
+  console.log(schedules)
   const cal = useRef(null);
+
+  const [updated, setUpdated] = useState(false);
   const [selectedView, setSelectedView] = useState("month")
   const [currentHeaderDate, setCurrentHeaderDate] = useState((new Date()).toLocaleDateString(undefined, options))
 
   const onClickSchedule = useCallback((e) => {
     const { calendarId, id } = e.schedule;
     const el = cal.current.calendarInst.getElement(id, calendarId);
-
     // console.log(e, el.getBoundingClientRect());
   }, []);
 
@@ -42,8 +50,9 @@ export default function Calendar({username, schedules, calendars, updateEquipos}
     let clicked_date = scheduleData.start._date.toISOString().substr(0,10);
     let current_date = new Date().toISOString().substring(0,10);
     
-    fireModalCrearEvento(username, clicked_date, current_date, calendars.map((x) => x.name), updateEquipos)
+    fireModalCrearEvento(username, clicked_date, current_date, equiposColorsData.map((x) => x.name), updateEquipos)
     
+
     console.log(scheduleData);
 
     // const schedule = {
@@ -130,18 +139,48 @@ export default function Calendar({username, schedules, calendars, updateEquipos}
               selectedView == "day" ? 0 : 6).toLocaleDateString(undefined, options) : ""))
   }
 
-  console.log("CALENDARS:")
-  console.log(calendars)
+  console.log("equiposColorsData:")
+  console.log(equiposColorsData)
+  
+  useEffect(() => {
+    console.log(cal.current)
+    console.log(schedules)
+
+    if (cal.current && cal.current.getInstance() && (!updated)){
+      console.log(cal.current.getInstance())
+      console.log("----");
+      console.log("SE VA A ACTUALIZAR CALENDARIO :")
+      cal.current.getInstance().clear();
+      cal.current.getInstance().setCalendars(equiposColorsData)
+      cal.current.getInstance().createSchedules(schedules)
+      console.log(cal.current.getInstance())
+      let x = () => {
+        cal.current.getInstance().setCalendars(equiposColorsData)
+        cal.current.getInstance().createSchedules(schedules)
+        console.log("called updateCal")
+
+      }
+        console.log(x)
+        setUpdateCal(function(prevState, props){
+          return x
+       })
+      setUpdated(true);
+      
+    }
+
+  })
+
+
   return (
     <div >
-      
+      <script ></script>
     <div className="rbc-toolbar">
             <span className="rbc-btn-group">
                 <button type="button" onClick={()=> {cal.current.getInstance().today();updateCurrentHeaderDate()}}>Hoy</button>
                 <button type="button" onClick={()=> {cal.current.getInstance().prev();updateCurrentHeaderDate()}}>Anterior</button>
                 <button type="button"onClick={()=> {cal.current.getInstance().next();updateCurrentHeaderDate()}}>Siguiente</button>
                 </span>
-            <span className="rbc-toolbar-label">{currentHeaderDate}</span>
+            <span className="rbc-toolbar-label" >{currentHeaderDate}</span>
             <span className="rbc-btn-group">
                 <button type="button" onClick={() => setSelectedView("day")} className="">Día</button>
                 <button type="button" onClick={() => setSelectedView("week")} className="">Semana</button>
@@ -156,10 +195,10 @@ export default function Calendar({username, schedules, calendars, updateEquipos}
         taskView={false}
         // useCreationPopup= {false}
         // useDetailPopup= {false}
-        useCreationPopup={false}
+        useCreationPopup={true}//false
         useDetailPopup={true}
         template={templates}
-        calendars={calendars}
+        calendars={equiposColorsData}
         schedules={schedules}
         onClickSchedule={onClickSchedule}
 
