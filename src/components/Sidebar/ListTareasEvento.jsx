@@ -15,8 +15,31 @@ import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
 
-export default function ListTareasEvento({username, equipo,equipoData, eventoData, updateEquipo}) {
+export default function ListTareasEvento({username, equipo,equipoData, nombreFechaEvento, updateEquipo}) {
   
+  const [eventoData,setEventoData] = useState();
+
+
+  if (!eventoData){
+    let url = `http://localhost:8080/evento/${nombreFechaEvento}`
+    fetch(url, {
+        method: 'GET'
+    }).then((response) => {
+        response.json().then(data => {
+        if (response.ok){
+            setEventoData(data)
+        } else {
+        swal.fire({
+            title: "Ocurrió un error: ",
+            text: data.message,
+            icon: "error"});
+        }
+    })}).catch((error) => {console.log(error); swal.fire({
+        title: "Ocurrió un error: ",
+        text: error.message,
+        icon: "error"});});       
+  }
+
   const handleBorrarTarea = (IDTAREA) => {
     let url = `http://localhost:8080//tarea/borrarTarea/${IDTAREA}`
 
@@ -29,7 +52,7 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
           swal.fire({
               title: "Se borró la tarea exitosamente",
               icon: "success"
-          }).then(() => updateEquipo())
+          }).then(() => setEventoData(null) /* updateEquipo() */)
 
         } else {
         swal.fire({
@@ -95,7 +118,7 @@ export default function ListTareasEvento({username, equipo,equipoData, eventoDat
         </TableBody>
       </Table>
       {(equipoData.lider == username) ? 
-            <ListItemButton onClick={() => fireModalCrearTarea(username, eventoData.nombreFecha, updateEquipo)} key="agregar">
+            <ListItemButton onClick={() => fireModalCrearTarea(username, eventoData.nombreFecha, () => setEventoData(null))} key="agregar">
               <ListItemIcon>
               <Add />
               </ListItemIcon>

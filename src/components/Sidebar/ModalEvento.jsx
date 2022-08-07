@@ -101,7 +101,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
           <Typography style={{margin:"5px", marginBottom:"2px"}} variant="h6">
             Tareas
           </Typography>
-           <ListTareasEvento username={username} equipo={equipo} equipoData={equipoData} eventoData={eventoData} updateEquipo={updateEquipo}></ListTareasEvento>
+           <ListTareasEvento username={username} equipo={equipo} nombreFechaEvento={eventoData.nombreFecha}equipoData={equipoData} updateEquipo={updateEquipo}></ListTareasEvento>
         </Box>
         </Fade>
       </Modal>
