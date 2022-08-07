@@ -7,7 +7,7 @@ import ModalCrearEquipo from './ModalCrearEquipo';
 import swal from 'sweetalert2';
 
 
-export default function ListEquipos({username, equipos, updateEquipos}){
+export default function ListEquipos({username, equipos, updateEquipos,updateTareas}){
     const [openCollapse, setOpenCollapse] = useState(true)
 
     return (
@@ -26,10 +26,10 @@ export default function ListEquipos({username, equipos, updateEquipos}){
             {equipos ? 
             <Collapse in={openCollapse} timeout="auto" unmountOnExit> 
                 <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
-                    {equipos.map((equipo) => <ModalEquipo username={username} key={equipo} equipo={equipo}></ModalEquipo>
+                    {equipos.map((equipo) => <ModalEquipo username={username} key={equipo} equipo={equipo} updateTareas={updateTareas} updateDashboard={updateEquipos}></ModalEquipo>
                     )}
 
-                <ModalCrearEquipo username={username} updateListEquipos={updateEquipos}/>
+                <ModalCrearEquipo username={username} updateListEquipos={updateEquipos} />
                 </List>
             </Collapse>
             : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}

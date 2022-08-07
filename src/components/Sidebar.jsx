@@ -4,7 +4,7 @@ import "./Sidebar.css"
 import ListEquipos from "./Sidebar/ListEquipos";
 import UserMenu from "./UserMenu";
 
-export default function Sidebar({username, equipos, updateEquipos}) {
+export default function Sidebar({username, equipos, updateEquipos,updateTareas}) {
 
     return (
     <div style={{display: "flex", flexDirection: "column", flexGrow:1}}> 
@@ -12,7 +12,7 @@ export default function Sidebar({username, equipos, updateEquipos}) {
         <UserMenu username={username}></UserMenu>
 
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <ListEquipos username={username} equipos={equipos} updateEquipos={updateEquipos}></ListEquipos>
+            <ListEquipos username={username} equipos={equipos} updateEquipos={updateEquipos} updateTareas={updateTareas}></ListEquipos>
         <Divider />
         </Box>
     </div>)

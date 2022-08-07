@@ -26,7 +26,7 @@ const style = {
   p: 4,
 };
 
-export default function ModalEquipo({username, equipo}) {
+export default function ModalEquipo({username, equipo,updateTareas}) {
 
   const [equipoData, setEquipoData] = useState(null)
 
@@ -34,7 +34,8 @@ export default function ModalEquipo({username, equipo}) {
   const handleOpen = () => {
         setEquipoData(null);
         setOpen(true);}
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {setOpen(false),
+                            updateTareas()};
   const updateModal = () => setEquipoData(null)
 
   if (!equipoData){
@@ -85,7 +86,7 @@ export default function ModalEquipo({username, equipo}) {
 
           <ListMiembrosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListMiembrosEquipo>
           <Divider></Divider>
-          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListEventosEquipo>
+          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal}></ListEventosEquipo>
         </Box>
         </Fade> 
       </Modal>
