@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Group';
-import { Add, Difference, Update} from "@mui/icons-material";
+import { Add, AutoAwesome, Difference, Update} from "@mui/icons-material";
 import swal from 'sweetalert2';
 import Remove from '@mui/icons-material/Remove';
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider} from "@mui/material";
+import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider, Grid} from "@mui/material";
 import ModalAgregarMiembroEquipo from './ModalAgregarMiembroEquipo';
 import ListEventosEquipo from './ListEventosEquipo';
 import ListTareasEvento from './ListTareasEvento';
@@ -62,6 +62,37 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
         icon: "error"});});       
   }
 
+  const handleRepartirEvento = (nombreFecha) => {
+    let url = `http://localhost:8080/tarea/repartirTareas/${nombreFecha}`
+    console.log(equipoData.miembros);
+
+    let body = JSON.stringify(equipoData.miembros)    
+
+    fetch(url, {method: 'PUT',
+                headers: {
+                          'Content-Type': "application/json"},
+                body: body}
+        ).then((response) => {
+        console.log(response)
+        if (response.ok){
+          swal.fire({
+              title: "Se repartió el evento equitativamente entre sus miembros",
+              icon: "success"
+          }).then(() => updateEquipo())
+        } else {
+        response.json().then(data => {
+        swal.fire({
+            title: "Ocurrió un error: ",
+            text: data.message,
+            icon: "error"});
+        })}
+    }).catch((error) => {console.log(error); swal.fire({
+        title: "Ocurrió un error: ",
+        text: error.message,
+        icon: "error"});});       
+  }
+
+
   return (
     <div>
       <ListItemButton onClick={handleOpen}>
@@ -97,6 +128,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
           timeout: 500,
         }}
       >
+
         <Fade in={open}>
           <Box sx={style}>
           <Typography color="primary" variant="h5">
@@ -107,10 +139,19 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
             Fecha: {eventoData.fecha} 
           </Typography>
 
-
-          <Typography style={{margin:"5px", marginBottom:"2px"}} variant="h6">
-            Tareas
-          </Typography>
+           {equipoData.lider == username ? <Grid container spacing={2} style={{marginTop: "0px"}} columns={16}>
+            <Grid item xs={8}>
+                <Typography style={{margin:"5px", marginBottom:"2px"}} variant="h6">
+                  Tareas
+                </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Button color="primary"  onClick={()=> handleRepartirEvento(eventoData.nombreFecha)} variant="contained" endIcon={<AutoAwesome/>}>
+                Repartir equitativamente
+                </Button>
+            </Grid>
+          </Grid>: ""}
+          
            <ListTareasEvento username={username} equipo={equipo} nombreFechaEvento={eventoData.nombreFecha}equipoData={equipoData} updateEquipo={updateEquipo}></ListTareasEvento>
         </Box>
         </Fade>
