@@ -79,20 +79,26 @@ export default function Dashboard() {
                 response.json().then(data => {
                 //console.log(data)
 
-                if (response.ok){
+                if (response.ok){ //nombreEvento, fechaEvento, nombreFechaEvento, peso, estado
                   data.forEach((evento) =>{
-                    evento.tareas.forEach((tarea)=>{
+                    evento.tareas.filter((tarea) => (tarea.asignado == username)).forEach((tarea)=>{
                       auxCalendarsData["tareas"].push({
                         calendarId: equipo,
                         category: "time",
                         isVisible: true,
                         title: tarea.nombre,
-                        id: String(auxCalendarsData.tareas.length),//JSON.stringify(tarea._id),
+                        id: JSON.stringify(tarea._id),
                         body: tarea.descripcion,
                         start: new Date(evento.fecha+":"+tarea.horaInicio),
-                        end: new Date(evento.fecha+":"+tarea.horaFin)/* ,
-                        status: tarea.estado,
-                        weight: tarea.peso */
+                        end: new Date(evento.fecha+":"+tarea.horaFin) ,
+                        raw: {
+                          estado: tarea.estado,
+                          peso: tarea.peso,
+                          nombreEvento: evento.nombre,
+                          fechaEvento: evento.fecha,
+                          nombreFechaEvento: evento.nombreFecha
+                        }
+                        
                       })
                     })
 

@@ -14,8 +14,9 @@ import "./Calendar.css";
 import { CircularProgress, Modal } from "@mui/material";
 import swal from "sweetalert2";
 
-import { fireModalCrearEvento } from "../events";
+import { fireModalCrearEvento, fireModalTarea } from "../events";
 import { useEffect } from "react";
+import ModalTarea from "./Sidebar/ModalTarea";
 
 function addDays(date, days) {
   var result = new Date(date);
@@ -28,9 +29,7 @@ const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 
 export default function Calendar({username, schedules, 
-  equiposColorsData, updateEquipos,
-updateCal,
-setUpdateCal}){
+  equiposColorsData, updateEquipos,updateCal,setUpdateCal}){
   console.log("CALENDAR LOADED")
   console.log(equiposColorsData)
   console.log(schedules)
@@ -40,9 +39,33 @@ setUpdateCal}){
   const [selectedView, setSelectedView] = useState("month")
   const [currentHeaderDate, setCurrentHeaderDate] = useState((new Date()).toLocaleDateString(undefined, options))
 
+  const [stateTareaModal, setStateTareaModal] = useState({open: false, tareaData: null})
+
+
+  const setOpenTareaModal = (open) => {
+    setStateTareaModal((prevState) => ({
+      ...prevState,
+      ["open"]: open
+    }))
+  }
+
+  const setTareaData = (tareaData) => {
+    setStateTareaModal((prevState) => ({
+      ...prevState,
+      ["tareaData"]: tareaData
+    }))
+  }
+  const [scheduleTareaModal, setScheduleTareaModal] = useState(null)
+
+
   const onClickSchedule = useCallback((e) => {
+    console.log(e);
     const { calendarId, id } = e.schedule;
-    const el = cal.current.calendarInst.getElement(id, calendarId);
+    setScheduleTareaModal(e.schedule);
+    setStateTareaModal({"open": true, "tareaData": null})
+
+    //fireModalTarea(username, updateEquipos, e.schedule)
+    //const el = cal.current.calendarInst.getElement(id, calendarId);
     // console.log(e, el.getBoundingClientRect());
   }, []);
 
@@ -129,7 +152,7 @@ setUpdateCal}){
 
   const templates = {
     time: function (schedule) {
-      console.log(schedule);
+      //console.log(schedule);
       return _getTimeTemplate(schedule, false);
     }
   };
@@ -173,7 +196,7 @@ setUpdateCal}){
 
   return (
     <div >
-      <script ></script>
+      <ModalTarea username={username} updateCalendar={updateEquipos} schedule={scheduleTareaModal} stateModal={stateTareaModal} setOpen={setOpenTareaModal} setTareaData={setTareaData}></ModalTarea>
     <div className="rbc-toolbar">
             <span className="rbc-btn-group">
                 <button type="button" onClick={()=> {cal.current.getInstance().today();updateCurrentHeaderDate()}}>Hoy</button>
@@ -195,8 +218,8 @@ setUpdateCal}){
         taskView={false}
         // useCreationPopup= {false}
         // useDetailPopup= {false}
-        useCreationPopup={true}//false
-        useDetailPopup={true}
+        useCreationPopup={false}//false
+        useDetailPopup={false}
         template={templates}
         calendars={equiposColorsData}
         schedules={schedules}

@@ -95,7 +95,7 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
               <TableCell align="right">{row.horaFin.substring(0,5)}</TableCell>
               {equipoData.lider == username ? 
                 <TableCell >                     
-                <ListItem style={{cursor: "pointer", border: "1px solid gray", borderRadius: "5px"}}onClick={()=> fireModalAsignarTarea(row.asignado, equipoData.miembros)}>
+                <ListItem style={{cursor: "pointer", border: "1px solid gray", borderRadius: "5px"}}onClick={()=> fireModalAsignarTarea(row.asignado, equipoData.miembros, eventoData.nombreFecha,row.nombre,() => setEventoData(null))}>
                   <ListItemText primary={row.asignado} />
                   </ListItem> 
                 </TableCell>
