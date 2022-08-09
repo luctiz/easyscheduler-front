@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Group';
-import { Add, Update} from "@mui/icons-material";
+import { Add, Difference, Update} from "@mui/icons-material";
 import swal from 'sweetalert2';
 import Remove from '@mui/icons-material/Remove';
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
@@ -15,6 +15,7 @@ import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItem
 import ModalAgregarMiembroEquipo from './ModalAgregarMiembroEquipo';
 import ListEventosEquipo from './ListEventosEquipo';
 import ListTareasEvento from './ListTareasEvento';
+import { fireModalDuplicarEvento } from '../../events';
 
 
 const style = {
@@ -22,7 +23,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  minWidth: 400,
+  minWidth: 600,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -70,11 +71,20 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
           <ListItemText primary={eventoData.nombre} />
           <ListItemText primary={eventoData.fecha}/> 
           {equipoData.lider == username ? 
-          <ListItemIcon onClick={()=> handleBorrarEvento(eventoData.nombreFecha)}>
+          <><ListItemIcon title="Eliminar" onClick={()=> handleBorrarEvento(eventoData.nombreFecha)}>
             <IconButton color="error">
               <Remove/>
             </IconButton>
-          </ListItemIcon> : ""}
+          </ListItemIcon> 
+
+          <ListItemIcon title="Duplicar" onClick={()=> fireModalDuplicarEvento(username, eventoData.nombreFecha, new Date().toISOString().substring(0,10) ,updateEquipo)}>
+          <IconButton color="primary">
+            <Difference/>
+          </IconButton>
+        </ListItemIcon>
+        </>: ""}
+
+          
       </ListItemButton>
      <Modal key="myModal"
         aria-labelledby="transition-modal-title"

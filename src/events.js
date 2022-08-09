@@ -67,6 +67,73 @@ swal.fire({
 }
 
 
+export function fireModalDuplicarEvento(username, nombreFecha,current_date,updateFunction){
+  fetch(`http://localhost:8080/usuario/${username}`, {method: 'GET'}
+        ).then((response) => {
+        response.json().then(data => {
+  swal.fire({
+    title: 'Duplicar evento',
+    focusConfirm: true,
+    html:
+    
+      `<h4 class="swal-content" style="margin-bottom:2px"> Equipo </h4>
+      <select id="nombreEquipo" style="margin-top:2px" class="swal2-input" name="select">
+      `
+      + data.equipos.map((x)=> x.nombre).map((x) => `<option value="${x}">${x}</option>`).reduce((x,y) => x+y) + 
+      `</select> <br/>
+      <h4 class="swal-content" style="margin-bottom:2px">Fecha</h4>
+      <input id="fechaEvento" style="margin-top:2px" class="swal2-input" type="date" value=${current_date} min=${current_date} />
+      <br />`,
+    showCancelButton: true,
+    cancelButtonColor: 'grey',
+    cancelButtonText: 'Cancelar',
+    confirmButtonText: 'Crear',
+    didOpen: () => { 
+  
+    let el = document.getElementsByClassName("MuiBox-root css-1wnsr1i")[0];
+    if (!el) return;
+    el.removeAttribute("tabIndex")
+    el.classList.add("js-swal-fixed") },
+    preConfirm: function () {
+      return new Promise(function (resolve) {
+        resolve({
+          "nombreEquipo": document.getElementById("nombreEquipo").value,
+          "fechaEvento": document.getElementById("fechaEvento").value.replace("/","-")
+      })
+      })
+    }
+  }).then(function (result) {
+    console.log(result)
+    if (result.isConfirmed){
+        fetch(`http://localhost:8080/duplicarEvento/duplicar/${nombreFecha}&${username}&${result.value.nombreEquipo}&${result.value.fechaEvento}`, {
+          method: 'POST'
+        }).then((response) => {
+          console.log(response)
+          response.json().then(data => {
+            console.log(data)
+            if (response.ok){
+              swal.fire({
+                title: "Se duplicó el evento exitosamente",
+                icon: "success"
+              }).then(() => updateFunction());
+            } else {
+                swal.fire({
+                title: "Ocurrió un error: ",
+                text: data.message,
+                icon: "error"});
+            }
+            })
+        })
+    }
+  }).then(() => document.querySelectorAll(".tui-full-calendar-month-guide-block").forEach((x) => x.remove()))
+  .catch((error) => {console.log(error); swal.fire({
+    title: "Ocurrió un error: ",
+    text: error.message,
+    icon: "error"});});   
+    })
+  })
+}
+
 export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction){
   swal.fire({
     title: 'Crear tarea',

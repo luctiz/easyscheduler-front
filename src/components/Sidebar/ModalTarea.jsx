@@ -52,7 +52,8 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
         method: 'GET'
     }).then((response) => {
       response.json().then(data => {
-        setTareaData(data[0].tareas.filter((x) => (x.nombre == schedule.title))[0])
+        console.log(data)
+        setTareaData(data.filter(x => x.nombreFecha == schedule.raw.nombreFechaEvento)[0].tareas.filter((x) => (x.nombre == schedule.title))[0])
       }).then(() => updateCalendar)
     })
   }

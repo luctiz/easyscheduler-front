@@ -57,13 +57,13 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
           : <span style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</span>,
           
           (equipoData.lider == username) ? 
-            <ListItem key="agregar">
+            <ListItem >
                 <ListItemButton
                         onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} >
                 <ListItemIcon>
                 <Add />
                 </ListItemIcon>
-                <ListItemText primary="Agregar" />
+                <ListItemText primary="Agregar Nuevo" />
             </ListItemButton> 
             </ListItem>
           : ""]
