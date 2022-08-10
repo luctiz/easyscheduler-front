@@ -1,9 +1,7 @@
 import React, { useCallback, useRef , useState} from "react";
-import { render } from "react-dom";
 
 import TUICalendar from "@toast-ui/react-calendar";
 // import Calendar from "tui-calendar";
-import { ISchedule, ICalendarInfo } from "tui-calendar";
 
 import "tui-calendar/dist/tui-calendar.css";
 import "tui-date-picker/dist/tui-date-picker.css";
@@ -11,15 +9,13 @@ import "tui-time-picker/dist/tui-time-picker.css";
 
 import "../styles.css";
 import "./Calendar.css";
-import { CircularProgress, Modal } from "@mui/material";
-import swal from "sweetalert2";
 
 import { fireModalCrearEvento } from "../events";
 import { useEffect } from "react";
 import ModalTarea from "./Sidebar/ModalTarea";
 
 function addDays(date, days) {
-  var result = new Date(date);
+  let result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 }
@@ -29,7 +25,7 @@ const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 
 export default function Calendar({username, schedules, 
-  equiposColorsData, updateEquipos,updateCal,setUpdateCal}){
+  equiposColorsData, updateEquipos,setUpdateCal}){
   const cal = useRef(null);
 
   const [updated, setUpdated] = useState(false);
@@ -57,7 +53,7 @@ export default function Calendar({username, schedules,
 
   const onClickSchedule = useCallback((e) => {
     console.log(e);
-    const { calendarId, id } = e.schedule;
+
     setScheduleTareaModal(e.schedule);
     setStateTareaModal({"open": true, "tareaData": null})
 
@@ -123,7 +119,7 @@ export default function Calendar({username, schedules,
   }
 
   function _getTimeTemplate(schedule, isAllDay) {
-    var html = [];
+    let html = [];
 
     if (!isAllDay) {
       html.push("<strong>" + _getFormattedTime(schedule.start) + "</strong> ");
@@ -156,7 +152,7 @@ export default function Calendar({username, schedules,
 
   const updateCurrentHeaderDate = () => {
     (setCurrentHeaderDate(cal.current ? addDays(cal.current.getInstance().getDateRangeStart().toDate(),
-              selectedView == "day" ? 0 : 6).toLocaleDateString(undefined, options) : ""))
+              selectedView === "day" ? 0 : 6).toLocaleDateString(undefined, options) : ""))
   }
   
   useEffect(() => {
@@ -171,7 +167,7 @@ export default function Calendar({username, schedules,
         cal.current.getInstance().createSchedules(schedules)
 
       }
-        setUpdateCal(function(prevState, props){
+        setUpdateCal(function(){
           return x
        })
       setUpdated(true);

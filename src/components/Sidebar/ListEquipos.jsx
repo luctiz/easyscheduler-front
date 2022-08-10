@@ -1,10 +1,9 @@
 import GroupsIcon from '@mui/icons-material/Groups';
-import { Add, ArrowDropDownOutlined, Drafts, ExpandLess, ExpandMore, Inbox, Logout} from "@mui/icons-material";
+import { ExpandLess, ExpandMore} from "@mui/icons-material";
 import { useState } from "react";
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress} from "@mui/material";
+import { List, ListItem, Collapse, ListItemButton, ListItemIcon, ListItemText, CircularProgress} from "@mui/material";
 import ModalEquipo from './ModalEquipo';
 import ModalCrearEquipo from './ModalCrearEquipo';
-import swal from 'sweetalert2';
 
 
 export default function ListEquipos({username, equipos, updateEquipos,updateTareas}){
@@ -26,7 +25,7 @@ export default function ListEquipos({username, equipos, updateEquipos,updateTare
             {equipos ? 
             <Collapse in={openCollapse} timeout="auto" unmountOnExit> 
                 <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
-                    {equipos.map((equipo) => <ModalEquipo username={username} key={equipo} equipo={equipo} updateTareas={updateTareas} updateDashboard={updateEquipos}></ModalEquipo>
+                    {equipos.map((equipo) => <ModalEquipo username={username} key={equipo} equipo={equipo} updateTareas={updateTareas} updateDashboard={updateEquipos}/>
                     )}
 
                 <ModalCrearEquipo username={username} updateListEquipos={updateEquipos} />

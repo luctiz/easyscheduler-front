@@ -2,15 +2,10 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import GroupIcon from '@mui/icons-material/Group';
-import GroupsIcon from '@mui/icons-material/Group';
-import { Add, Check, CheckBoxOutlineBlank} from "@mui/icons-material";
+import { Check, CheckBoxOutlineBlank} from "@mui/icons-material";
 
 
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider, TextField} from "@mui/material";
-import swal from 'sweetalert2';
+import { IconButton , CircularProgress} from "@mui/material";
 
 
 const style = {
@@ -34,8 +29,7 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
 
   //;
   console.log(schedule)
-  const handleOpen = () => {
-        setOpen(true);}
+
   const handleClose = () => {setOpen(false)};
 
   //const [tareaData, setTareaData] = useState(null)
@@ -53,7 +47,7 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
     }).then((response) => {
       response.json().then(data => {
         console.log(data)
-        setTareaData(data.filter(x => x.nombreFecha == schedule.raw.nombreFechaEvento)[0].tareas.filter((x) => (x.nombre == schedule.title))[0])
+        setTareaData(data.filter(x => x.nombreFecha === schedule.raw.nombreFechaEvento)[0].tareas.filter((x) => (x.nombre === schedule.title))[0])
       }).then(() => updateCalendar)
     })
   }
@@ -103,7 +97,7 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
 
           <h4 className="swal-title">{schedule.title}</h4>
 
-          <span> {schedule.start._date.toLocaleString('en-US', { hour: 'numeric', minute:"numeric", hour12: true }).toLowerCase()} - {schedule.end._date.toLocaleString('en-US', { hour: 'numeric', minute:"numeric", hour12: true }).toLowerCase()}</span>
+          <span> {schedule.start._date.toLocaleString().toLowerCase()} - {schedule.end._date.toLocaleString().toLowerCase()}</span>
           <h4 className="swal-title" style={{textAlign: "left"}}>Descripción: {schedule.body}</h4>
             
           <h4 className="swal-title" style={{textAlign: "left"}}>Peso: {schedule.raw.peso}</h4>
@@ -111,12 +105,12 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
           {tareaData ? 
           <div style={{ textAlign: "left", marginBottom:"30px"}}>
             <span className="swal-title" style={{fontWeight: "bold"}}>Estado: {tareaData.estado}</span>
-                  {tareaData.estado == "Pendiente" ? 
+                  {tareaData.estado === "Pendiente" ?
                           <IconButton title='Completar' onClick={handleTaskCheckbox} ><CheckBoxOutlineBlank/></IconButton>
                         : <IconButton title='La tarea se encuentra completada'><Check/></IconButton>}
                   
                   </div>
-          : <CircularProgress></CircularProgress>
+          : <CircularProgress/>
           } 
 
           </div> 

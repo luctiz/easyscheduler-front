@@ -1,15 +1,14 @@
-import Paper from '@mui/material/Paper';
 import { useState } from 'react';
-import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
+import { List, ListItem, CircularProgress, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { fireModalCrearEvento } from '../../events';
-import { Add, Remove } from '@mui/icons-material';
+import { Add} from '@mui/icons-material';
 
 import swal from 'sweetalert2';
 import ModalEvento from './ModalEvento';
 
-export default function ListEventosEquipo({username, equipo,equipoData, updateEquipo}) {
+export default function ListEventosEquipo({username, equipo,equipoData}) {
 
     const [eventosEquipo, setEventosEquipo] = useState(null);
 
@@ -49,14 +48,14 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
 
     {(eventosEquipo && equipoData) ? 
     <List sx={{ ml: 2, pl: 2 }} component="div" disablePadding>
-      { [(eventosEquipo.length != 0) ? 
+      { [(eventosEquipo.length !== 0) ?
                   eventosEquipo.map((eventoData) => 
-                  <ModalEvento key={eventoData.nombreFecha} 
-                    username={username} equipo={equipo} equipoData={equipoData} eventoData={eventoData} updateEquipo={updateModal}></ModalEvento>
+                  <ModalEvento key={eventoData.nombreFecha}
+    username={username} equipo={equipo} equipoData={equipoData} eventoData={eventoData} updateEquipo={updateModal}/>
                   )
           : <li key="none" style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</li>,
           
-          (equipoData.lider == username) ? 
+          (equipoData.lider === username) ?
             <ListItem key="agregar" >
                 <ListItemButton
                         onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} >

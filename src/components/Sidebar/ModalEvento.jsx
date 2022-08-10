@@ -4,16 +4,12 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import GroupIcon from '@mui/icons-material/Group';
-import GroupsIcon from '@mui/icons-material/Group';
-import { Add, AutoAwesome, Difference, Update} from "@mui/icons-material";
+import { AutoAwesome, Difference} from "@mui/icons-material";
 import swal from 'sweetalert2';
 import Remove from '@mui/icons-material/Remove';
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
 
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider, Grid} from "@mui/material";
-import ModalAgregarMiembroEquipo from './ModalAgregarMiembroEquipo';
-import ListEventosEquipo from './ListEventosEquipo';
+import { IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider, Grid} from "@mui/material";
 import ListTareasEvento from './ListTareasEvento';
 import { fireModalDuplicarEvento } from '../../events';
 
@@ -101,7 +97,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
           </ListItemIcon>
           <ListItemText primary={eventoData.nombre} />
           <ListItemText primary={eventoData.fecha}/> 
-          {equipoData.lider == username ? 
+          {equipoData.lider === username ?
           <><ListItemIcon title="Eliminar" onClick={()=> handleBorrarEvento(eventoData.nombreFecha)}>
             <IconButton color="error">
               <Remove/>
@@ -134,12 +130,12 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
           <Typography color="primary" variant="h5">
             {eventoData.nombre}
           </Typography>
-          <Divider></Divider>
+          <Divider/>
           <Typography variant="h6">
             Fecha: {eventoData.fecha} 
           </Typography>
 
-           {equipoData.lider == username ? <Grid container spacing={2} style={{marginTop: "0px"}} columns={16}>
+           {equipoData.lider === username ? <Grid container spacing={2} style={{marginTop: "0px"}} columns={16}>
             <Grid item xs={8}>
                 <Typography style={{margin:"5px", marginBottom:"2px"}} variant="h6">
                   Tareas
@@ -152,7 +148,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
             </Grid>
           </Grid>: ""}
           
-           <ListTareasEvento username={username} equipo={equipo} nombreFechaEvento={eventoData.nombreFecha}equipoData={equipoData} updateEquipo={updateEquipo}></ListTareasEvento>
+           <ListTareasEvento username={username} equipo={equipo} nombreFechaEvento={eventoData.nombreFecha} equipoData={equipoData} updateEquipo={updateEquipo}/>
         </Box>
         </Fade>
       </Modal>

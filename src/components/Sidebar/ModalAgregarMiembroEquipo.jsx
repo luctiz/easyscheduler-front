@@ -2,14 +2,11 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import GroupIcon from '@mui/icons-material/Group';
-import GroupsIcon from '@mui/icons-material/Group';
 import { Add} from "@mui/icons-material";
 
 
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider, TextField} from "@mui/material";
+import { IconButton , ListItemButton, ListItemIcon, ListItemText, TextField} from "@mui/material";
 import swal from 'sweetalert2';
 
 
@@ -26,7 +23,7 @@ const style = {
 };
 
 
-export default function ModalAgregarMiembroEquipo({username, equipo, updateModalEquipo}) {
+export default function ModalAgregarMiembroEquipo({equipo, updateModalEquipo}) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {

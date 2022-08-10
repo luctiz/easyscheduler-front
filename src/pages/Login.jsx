@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import swal from 'sweetalert2';
 
 import {Container, Stack, TextField, Button, Typography} from '@mui/material';
@@ -27,7 +27,7 @@ export default function Login() {
           console.log(data)
 
           if (response.ok){
-            if (data.contrasenia != pass){
+            if (data.contrasenia !== pass){
               swal.fire({
                 title: "Ocurrió un error: ",
                 text: "Contraseña incorrecta",
@@ -59,7 +59,7 @@ export default function Login() {
       return (
         <>
 
-            <AppHeaderBig></AppHeaderBig>
+            <AppHeaderBig/>
             
             <Container style={{paddingTop: "20px", maxWidth: "800px"}}>
             <Typography variant="h4" component="h4" style={{textAlign: "center", color: "#6F7E8C"}}> 

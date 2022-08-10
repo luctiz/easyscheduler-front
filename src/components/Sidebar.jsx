@@ -9,10 +9,10 @@ export default function Sidebar({username, equipos, updateEquipos,updateTareas})
     return (
     <div style={{display: "flex", flexDirection: "column", flexGrow:1}}> 
 
-        <UserMenu username={username}></UserMenu>
+        <UserMenu username={username}/>
 
         <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <ListEquipos username={username} equipos={equipos} updateEquipos={updateEquipos} updateTareas={updateTareas}></ListEquipos>
+            <ListEquipos username={username} equipos={equipos} updateEquipos={updateEquipos} updateTareas={updateTareas}/>
         <Divider />
         </Box>
     </div>)

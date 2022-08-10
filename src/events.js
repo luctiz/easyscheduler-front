@@ -217,7 +217,7 @@ export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction)
       
       `<select id="miembroAsignar" style="margin-top:2px" class="swal2-input" name="select">
       `
-      + miembrosList.map((x) => (x==defaultvalue?`<option value="${x}" selected>${x}</option>`:`<option value="${x}">${x}</option>`)).reduce((x,y) => x+y),
+      + miembrosList.map((x) => (x === defaultvalue?`<option value="${x}" selected>${x}</option>`:`<option value="${x}">${x}</option>`)).reduce((x, y) => x+y),
     
       showCancelButton: true,
       cancelButtonColor: 'grey',

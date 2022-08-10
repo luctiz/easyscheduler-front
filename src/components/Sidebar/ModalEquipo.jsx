@@ -2,14 +2,12 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import GroupIcon from '@mui/icons-material/Group';
 
-import { Add, Update} from "@mui/icons-material";
 import swal from 'sweetalert2';
 
-import { List, ListItem, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Divider} from "@mui/material";
+import { ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
 import ListEventosEquipo from './ListEventosEquipo';
 import ListMiembrosEquipo from './ListMiembrosEquipo';
 
@@ -45,7 +43,7 @@ export default function ModalEquipo({username, equipo,updateTareas}) {
     }).then((response) => {
         response.json().then(data => {
         if (response.ok){
-            setEquipoData({"lider": data[0].equipos.filter((e) => e.nombre == equipo)[0].lider,
+            setEquipoData({"lider": data[0].equipos.filter((e) => e.nombre === equipo)[0].lider,
                          "miembros": data.map((usuario) => usuario.nombreUsuario)})
         } else {
         swal.fire({
@@ -65,7 +63,7 @@ export default function ModalEquipo({username, equipo,updateTareas}) {
     <div>
     <ListItemButton onClick={handleOpen} key={equipo}>
         <ListItemIcon>
-        <GroupIcon></GroupIcon>
+        <GroupIcon/>
         </ListItemIcon>
         <ListItemText primary={equipo} />
     </ListItemButton>
@@ -84,9 +82,9 @@ export default function ModalEquipo({username, equipo,updateTareas}) {
           <Box sx={style}>
           <span className="css-10hburv-MuiTypography-root">{equipo}</span>
 
-          <ListMiembrosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} ></ListMiembrosEquipo>
-          <Divider></Divider>
-          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal}></ListEventosEquipo>
+          <ListMiembrosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal} />
+          <Divider/>
+          <ListEventosEquipo username={username} equipo={equipo} equipoData={equipoData} updateEquipo={updateModal}/>
         </Box>
         </Fade> 
       </Modal>

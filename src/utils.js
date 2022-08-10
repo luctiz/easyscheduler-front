@@ -1,21 +1,21 @@
 export function djb2(str){
-    var hash = 5381;
-    for (var i = 0; i < str.length; i++) {
+    let hash = 5381;
+    for (let i = 0; i < str.length; i++) {
       hash = ((hash << 5) + hash) + str.charCodeAt(i);
     }
     return hash;
   }
   
   export function hashStringToColor(str) {
-    var hash = djb2(str);
+    let hash = djb2(str);
   
-    var rgb = [0,0,0];
+    let rgb = [0,0,0];
      rgb[0] = (hash & 0xFF0000) >> 16;
      rgb[1] = (hash & 0x00FF00) >> 8;
      rgb[2] = hash & 0x0000FF;
   
     // saturate:
-    var max, min;
+    let max, min;
   
       if (rgb[0] > rgb[1])
       {
@@ -25,7 +25,7 @@ export function djb2(str){
       else
       {
           max = (rgb[1] > rgb[2]) ? 1 : 2;
-          var notmax = 1 + max % 2;
+          let notmax = 1 + max % 2;
           min = (rgb[0] < rgb[notmax]) ? 0 : notmax;
       }
   
@@ -39,4 +39,3 @@ export function djb2(str){
 
 
 
-  function resolveCalendarData(){}

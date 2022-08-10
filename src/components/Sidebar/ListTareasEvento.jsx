@@ -8,14 +8,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import { useState } from 'react';
-import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
+import { ListItem, CircularProgress, IconButton , ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 
-import { fireModalAsignarTarea, fireModalCrearEvento, fireModalCrearTarea } from '../../events';
+import { fireModalAsignarTarea, fireModalCrearTarea } from '../../events';
 import { Add, Remove } from '@mui/icons-material';
 
 import swal from 'sweetalert2';
 
-export default function ListTareasEvento({username, equipo,equipoData, nombreFechaEvento, updateEquipo}) {
+export default function ListTareasEvento({username, equipoData, nombreFechaEvento}) {
   
   const [eventoData,setEventoData] = useState();
 
@@ -78,7 +78,7 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
             <TableCell align="right">Asignado a</TableCell>
             <TableCell align="right">Peso</TableCell>
             <TableCell align="right">Estado</TableCell>
-            {equipoData.lider == username? <TableCell >Borrar</TableCell> : ""}
+            {equipoData.lider === username? <TableCell >Borrar</TableCell> : ""}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -93,9 +93,9 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
               <TableCell align="right">{row.descripcion}</TableCell>
               <TableCell align="right">{row.horaInicio.substring(0,5)}</TableCell>
               <TableCell align="right">{row.horaFin.substring(0,5)}</TableCell>
-              {equipoData.lider == username ? 
+              {equipoData.lider === username ?
                 <TableCell >                     
-                <ListItem style={{cursor: "pointer", border: "1px solid gray", borderRadius: "5px"}}onClick={()=> fireModalAsignarTarea(row.asignado, equipoData.miembros, eventoData.nombreFecha,row.nombre,() => setEventoData(null))}>
+                <ListItem style={{cursor: "pointer", border: "1px solid gray", borderRadius: "5px"}} onClick={()=> fireModalAsignarTarea(row.asignado, equipoData.miembros, eventoData.nombreFecha,row.nombre,() => setEventoData(null))}>
                   <ListItemText primary={row.asignado} />
                   </ListItem> 
                 </TableCell>
@@ -103,7 +103,7 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
 }
               <TableCell align="right">{row.peso}</TableCell>
               <TableCell align="right">{row.estado}</TableCell>
-              {equipoData.lider == username ? 
+              {equipoData.lider === username ?
                 <TableCell >                     
                 <ListItemIcon onClick={()=> handleBorrarTarea(`${eventoData.nombreFecha}&${row.nombre}`)}>
                         <IconButton color="error">
@@ -114,10 +114,10 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
                       
                       
             </TableRow>
-          )) : <CircularProgress></CircularProgress>}
+          )) : <CircularProgress/>}
         </TableBody>
       </Table>
-      {(equipoData.lider == username) ? 
+      {(equipoData.lider === username) ?
             <ListItemButton onClick={() => fireModalCrearTarea(username, eventoData.nombreFecha, () => setEventoData(null))} key="agregar">
               <ListItemIcon>
               <Add />

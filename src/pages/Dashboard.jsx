@@ -1,10 +1,8 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState} from 'react';
 import swal from 'sweetalert2';
 
-import {Container, Stack, TextField, Button, Typography, CircularProgress} from '@mui/material';
-import AppHeaderBig from '../components/AppHeaderBig';
-import { NavLink } from 'react-router-dom';
+import {CircularProgress} from '@mui/material';
 import Sidebar from '../components/Sidebar';
 import Calendar from '../components/Calendar';
 import { hashStringToColor } from '../utils';
@@ -68,7 +66,7 @@ export default function Dashboard() {
 
           if (!calendarData){
           let auxCalendarsData = {}
-          auxCalendarsData["equiposColorsData"] = equipos.map((a,i) => {return {id: a, name: a, color: "#FFFFFF", bgColor: hashStringToColor(a), borderColor: hashStringToColor(a)}})
+          auxCalendarsData["equiposColorsData"] = equipos.map((a) => {return {id: a, name: a, color: "#FFFFFF", bgColor: hashStringToColor(a), borderColor: hashStringToColor(a)}})
           auxCalendarsData["tareas"] = []
           equipos.forEach((equipo)=>{
             let url = `${process.env.REACT_APP_BACKEND_URL}/evento/equipo/${equipo}`
@@ -83,7 +81,7 @@ export default function Dashboard() {
 
                 if (response.ok){ //nombreEvento, fechaEvento, nombreFechaEvento, peso, estado
                   data.forEach((evento) =>{
-                    evento.tareas.filter((tarea) => (tarea.asignado == username)).forEach((tarea)=>{
+                    evento.tareas.filter((tarea) => (tarea.asignado === username)).forEach((tarea)=>{
                       auxCalendarsData["tareas"].push({
                         calendarId: equipo,
                         category: "time",
@@ -142,7 +140,7 @@ export default function Dashboard() {
         <div style={{display: "flex", width: "100%"}}>
 
         <div style={{flexDirection: "column", flex: "none", width: "256px", overflow: "hidden", position: "relative"}} >
-          <Sidebar username={username} equipos={equipos} updateEquipos={updateEquipos} updateTareas={updateTareas}></Sidebar>
+          <Sidebar username={username} equipos={equipos} updateEquipos={updateEquipos} updateTareas={updateTareas}/>
           </div>
             
 

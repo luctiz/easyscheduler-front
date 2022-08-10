@@ -1,11 +1,6 @@
-import Paper from '@mui/material/Paper';
-import { useState } from 'react';
-import { List, ListItem, CircularProgress, Collapse, IconButton , Button, ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
+import { List, ListItem, CircularProgress, IconButton , ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
-import { fireModalCrearEvento } from '../../events';
-import { Add, Remove } from '@mui/icons-material';
+import { Remove } from '@mui/icons-material';
 import GroupsIcon from '@mui/icons-material/Group';
 import GroupIcon from '@mui/icons-material/Group';
 import swal from 'sweetalert2';
@@ -66,12 +61,12 @@ export default function ListMiembrosEquipo({username, equipo,equipoData, updateE
                 {equipoData.miembros.map((miembro) => 
                 <ListItemButton key={miembro}>
                     <ListItemIcon>
-                    <GroupIcon></GroupIcon>
+                    <GroupIcon/>
                     </ListItemIcon>
                     <ListItemText primary={miembro} />
-                    {(equipoData.lider == miembro) 
+                    {(equipoData.lider === miembro)
                     ? <ListItemText primary="Lider"/> 
-                    : (equipoData.lider == username ? 
+                    : (equipoData.lider === username ?
                       <ListItemIcon onClick={()=> handleBorrarMiembro(miembro)}>
                         <IconButton color="error">
                           <Remove/>
@@ -79,7 +74,7 @@ export default function ListMiembrosEquipo({username, equipo,equipoData, updateE
                       </ListItemIcon> : "")}
                 </ListItemButton>)}
 
-            {(equipoData.lider == username) ? <ModalAgregarMiembroEquipo equipo={equipo} username={username} updateModalEquipo={updateEquipo}></ModalAgregarMiembroEquipo> : ""}
+            {(equipoData.lider === username) ? <ModalAgregarMiembroEquipo equipo={equipo} username={username} updateModalEquipo={updateEquipo}/> : ""}
         </List>
         : <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress /></div>}
         

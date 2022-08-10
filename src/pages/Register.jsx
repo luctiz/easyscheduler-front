@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import swal from 'sweetalert2';
 
 import {Container, Stack, TextField, Button, Typography} from '@mui/material';
@@ -14,8 +14,8 @@ export default function Register() {
   
         let url = `${process.env.REACT_APP_BACKEND_URL}/usuario/${form.get("username")}&${form.get("password")}`
         
-        if (form.get("password") != form.get("confirmPassword")){
-          swal.fire({
+        if (form.get("password") !== form.get("confirmPassword")){
+          await swal.fire({
             title: "Ocurrió un error: ",
             text: "Las contraseñas no coinciden",
             icon: "error"});
@@ -53,7 +53,7 @@ export default function Register() {
       return (
         <>
 
-            <AppHeaderBig></AppHeaderBig>
+            <AppHeaderBig/>
             
             <Container style={{paddingTop: "20px", maxWidth: "800px"}}>
             <Typography variant="h4" component="h4" style={{textAlign: "center", color: "#6F7E8C"}}> 

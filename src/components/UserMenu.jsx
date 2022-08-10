@@ -1,16 +1,14 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
 import { Logout } from '@mui/icons-material';
 import { Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
-import { deepOrange, deepPurple } from '@mui/material/colors';
+import { deepOrange} from '@mui/material/colors';
 
 
 export default function UserMenu({username}) {
@@ -29,7 +27,7 @@ export default function UserMenu({username}) {
     setOpen(false);
   };
 
-  const cerrarSesion = (e) => {
+  const cerrarSesion = () => {
     window.localStorage.removeItem("username")
     window.localStorage.removeItem("isLoggedIn")
 
