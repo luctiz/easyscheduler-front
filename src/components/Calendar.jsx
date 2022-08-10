@@ -30,9 +30,6 @@ const DAYNAMES_SPANISH = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb']
 
 export default function Calendar({username, schedules, 
   equiposColorsData, updateEquipos,updateCal,setUpdateCal}){
-  console.log("CALENDAR LOADED")
-  console.log(equiposColorsData)
-  console.log(schedules)
   const cal = useRef(null);
 
   const [updated, setUpdated] = useState(false);
@@ -161,29 +158,19 @@ export default function Calendar({username, schedules,
     (setCurrentHeaderDate(cal.current ? addDays(cal.current.getInstance().getDateRangeStart().toDate(),
               selectedView == "day" ? 0 : 6).toLocaleDateString(undefined, options) : ""))
   }
-
-  console.log("equiposColorsData:")
-  console.log(equiposColorsData)
   
   useEffect(() => {
-    console.log(cal.current)
-    console.log(schedules)
 
     if (cal.current && cal.current.getInstance() && (!updated)){
-      console.log(cal.current.getInstance())
-      console.log("----");
-      console.log("SE VA A ACTUALIZAR CALENDARIO :")
+      
       cal.current.getInstance().clear();
       cal.current.getInstance().setCalendars(equiposColorsData)
       cal.current.getInstance().createSchedules(schedules)
-      console.log(cal.current.getInstance())
       let x = () => {
         cal.current.getInstance().setCalendars(equiposColorsData)
         cal.current.getInstance().createSchedules(schedules)
-        console.log("called updateCal")
 
       }
-        console.log(x)
         setUpdateCal(function(prevState, props){
           return x
        })

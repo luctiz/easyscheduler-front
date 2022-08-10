@@ -54,10 +54,10 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
                   <ModalEvento key={eventoData.nombreFecha} 
                     username={username} equipo={equipo} equipoData={equipoData} eventoData={eventoData} updateEquipo={updateModal}></ModalEvento>
                   )
-          : <span style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</span>,
+          : <li key="none" style={{marginLeft: "20px"}}>Aún no hay eventos para este equipo</li>,
           
           (equipoData.lider == username) ? 
-            <ListItem >
+            <ListItem key="agregar" >
                 <ListItemButton
                         onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} >
                 <ListItemIcon>
