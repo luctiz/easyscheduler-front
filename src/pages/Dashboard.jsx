@@ -29,7 +29,7 @@ export default function Dashboard() {
 
     const updateTareas = () => {
       //updateEquipos();
-      setFinalUpdate(3);
+      setFinalUpdate(4);
       setCalendarData(null);
     }
 
@@ -81,6 +81,18 @@ export default function Dashboard() {
 
                 if (response.ok){ //nombreEvento, fechaEvento, nombreFechaEvento, peso, estado
                   data.forEach((evento) =>{
+                    auxCalendarsData["tareas"].push({
+                      calendarId: equipo,
+                      category: "allday",
+                      isVisible: TrustedScript,
+                      title: evento.nombre,
+                      id: evento.nombreFecha,
+                      body: '',
+                      start: new Date(evento.fecha+":00:00"),
+                      end: new Date(evento.fecha+":23:59")
+
+
+                    })
                     evento.tareas.filter((tarea) => (tarea.asignado === username)).forEach((tarea)=>{
                       auxCalendarsData["tareas"].push({
                         calendarId: equipo,
@@ -150,7 +162,7 @@ export default function Dashboard() {
           
         {(equipos && calendarData) ? <Calendar schedules={calendarData.tareas}
               equiposColorsData={calendarData.equiposColorsData}
-              updateEquipos={updateEquipos}
+              updateEquipos={updateTareas}
               //cal={cal}
               updateCal={updateCal}
               setUpdateCal={setUpdateCal}

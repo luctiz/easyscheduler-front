@@ -10,7 +10,7 @@ import "tui-time-picker/dist/tui-time-picker.css";
 import "../styles.css";
 import "./Calendar.css";
 
-import { fireModalCrearEvento } from "../events";
+import { fireModalCrearEvento, fireModalCrearTarea } from "../events";
 import { useEffect } from "react";
 import ModalTarea from "./Sidebar/ModalTarea";
 
@@ -54,8 +54,15 @@ export default function Calendar({username, schedules,
   const onClickSchedule = useCallback((e) => {
     console.log(e);
 
-    setScheduleTareaModal(e.schedule);
-    setStateTareaModal({"open": true, "tareaData": null})
+
+    if (e.schedule.category === "allday"){
+      fireModalCrearTarea(username, e.schedule.id, updateEquipos)
+    } else {
+
+      setScheduleTareaModal(e.schedule);
+      setStateTareaModal({"open": true, "tareaData": null})
+
+  }
 
     //fireModalTarea(username, updateEquipos, e.schedule)
     //const el = cal.current.calendarInst.getElement(id, calendarId);
@@ -63,6 +70,7 @@ export default function Calendar({username, schedules,
   }, []);
 
   const onBeforeCreateSchedule = useCallback((scheduleData) => {
+
     let clicked_date = scheduleData.start._date.toISOString().substr(0,10);
     let current_date = new Date().toISOString().substring(0,10);
     
