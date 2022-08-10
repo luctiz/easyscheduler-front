@@ -14,7 +14,7 @@ import "./Calendar.css";
 import { CircularProgress, Modal } from "@mui/material";
 import swal from "sweetalert2";
 
-import { fireModalCrearEvento, fireModalTarea } from "../events";
+import { fireModalCrearEvento } from "../events";
 import { useEffect } from "react";
 import ModalTarea from "./Sidebar/ModalTarea";
 

@@ -72,13 +72,14 @@ export default function Dashboard() {
           auxCalendarsData["tareas"] = []
           equipos.forEach((equipo)=>{
             let url = `${process.env.REACT_APP_BACKEND_URL}/evento/equipo/${equipo}`
+            console.log(url)
 
               fetch(url, {
                 method: 'GET'
               })
               .then((response) => {
                 response.json().then(data => {
-                //console.log(data)
+                console.log(data)
 
                 if (response.ok){ //nombreEvento, fechaEvento, nombreFechaEvento, peso, estado
                   data.forEach((evento) =>{
