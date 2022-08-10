@@ -22,14 +22,14 @@ export default function Dashboard() {
     const [calendarData, setCalendarData] = useState(null)
 
     const [updateCal,setUpdateCal] = useState(null)
-    const [finalUpdate,setFinalUpdate] = useState(true)
+    const [finalUpdate,setFinalUpdate] = useState(3)
 
     const updateEquipos = () => {setEquipos(null)};
 
 
     const updateTareas = () => {
       //updateEquipos();
-      setFinalUpdate(true);
+      setFinalUpdate(3);
       setCalendarData(null);
     }
 
@@ -129,11 +129,13 @@ export default function Dashboard() {
       //   }
       // })
 
-      if (updateCal && equipos && finalUpdate){
+      if (updateCal && equipos && (finalUpdate > 0)){
+        console.log(updateCal)
         updateCal();
         setUpdateCal(null)
         setEquipos(null)
-        setFinalUpdate(false)
+        setFinalUpdate(finalUpdate - 1)
+        
       }
 
       return (
