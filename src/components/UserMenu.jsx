@@ -9,6 +9,7 @@ import { Logout } from '@mui/icons-material';
 import { Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 import { deepOrange} from '@mui/material/colors';
+import { hashStringToColor } from '../utils';
 
 
 export default function UserMenu({username}) {
@@ -66,7 +67,7 @@ export default function UserMenu({username}) {
           aria-haspopup="true"
           onClick={handleToggle}>
             <ListItemIcon>
-                <Avatar sx={{ bgcolor: deepOrange[500] }}>{username[0].toUpperCase()}</Avatar>            </ListItemIcon>
+                <Avatar sx={{ bgcolor: hashStringToColor(username) }}>{username[0].toUpperCase()}</Avatar>            </ListItemIcon>
             <ListItemText primary={username} />
             </ListItemButton>
         </ListItem> 

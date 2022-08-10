@@ -10,6 +10,7 @@ import swal from 'sweetalert2';
 import { ListItemButton, ListItemIcon, ListItemText, Divider} from "@mui/material";
 import ListEventosEquipo from './ListEventosEquipo';
 import ListMiembrosEquipo from './ListMiembrosEquipo';
+import { hashStringToColor } from '../../utils';
 
 
 const style = {
@@ -63,7 +64,7 @@ export default function ModalEquipo({username, equipo,updateTareas}) {
     <div>
     <ListItemButton onClick={handleOpen} key={equipo}>
         <ListItemIcon>
-        <GroupIcon/>
+        <GroupIcon style={{color: "white", padding: "2px", borderRadius: "5px", backgroundColor: `${hashStringToColor(equipo)}`}}/>
         </ListItemIcon>
         <ListItemText primary={equipo} />
     </ListItemButton>
