@@ -39,7 +39,7 @@ export default function ModalCrearEquipo({username, updateListEquipos}) {
     const form = new FormData(e.currentTarget);
     const nombreEquipo = form.get("nombreEquipo");
 
-    let url = `http://localhost:8080/equipo/${nombreEquipo}&${username}`;
+    let url = `${process.env.REACT_APP_BACKEND_URL}/equipo/${nombreEquipo}&${username}`;
 
     let data = [];
 

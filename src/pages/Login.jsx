@@ -16,7 +16,7 @@ export default function Login() {
         let user = form.get("username")
         let pass = form.get("password")
 
-        let url = `http://localhost:8080/usuario/${user}`
+        let url = `${process.env.REACT_APP_BACKEND_URL}/usuario/${user}`
   
         fetch(url, {
           method: 'GET'

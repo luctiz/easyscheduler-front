@@ -12,7 +12,7 @@ export default function Register() {
         e.preventDefault()
         const form = new FormData(e.currentTarget);
   
-        let url = `http://localhost:8080/usuario/${form.get("username")}&${form.get("password")}`
+        let url = `${process.env.REACT_APP_BACKEND_URL}/usuario/${form.get("username")}&${form.get("password")}`
         
         if (form.get("password") != form.get("confirmPassword")){
           swal.fire({

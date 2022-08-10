@@ -39,7 +39,7 @@ swal.fire({
 }).then(function (result) {
   console.log(result)
   if (result.isConfirmed){
-      fetch(`http://localhost:8080/evento/${result.value.nombreEvento}&${result.value.fechaEvento}&${result.value.nombreEquipo}&${username}`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/evento/${result.value.nombreEvento}&${result.value.fechaEvento}&${result.value.nombreEquipo}&${username}`, {
         method: 'POST'
       }).then((response) => {
         console.log(response)
@@ -68,7 +68,7 @@ swal.fire({
 
 
 export function fireModalDuplicarEvento(username, nombreFecha,current_date,updateFunction){
-  fetch(`http://localhost:8080/usuario/${username}`, {method: 'GET'}
+  fetch(`${process.env.REACT_APP_BACKEND_URL}/usuario/${username}`, {method: 'GET'}
         ).then((response) => {
         response.json().then(data => {
   swal.fire({
@@ -105,7 +105,7 @@ export function fireModalDuplicarEvento(username, nombreFecha,current_date,updat
   }).then(function (result) {
     console.log(result)
     if (result.isConfirmed){
-        fetch(`http://localhost:8080/duplicarEvento/duplicar/${nombreFecha}&${username}&${result.value.nombreEquipo}&${result.value.fechaEvento}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/duplicarEvento/duplicar/${nombreFecha}&${username}&${result.value.nombreEquipo}&${result.value.fechaEvento}`, {
           method: 'POST'
         }).then((response) => {
           console.log(response)
@@ -180,7 +180,7 @@ export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction)
     console.log(result)
     if (result.isConfirmed){
       let v = result.value;
-        fetch(`http://localhost:8080/tarea/${nombreFechaEvento}&${v.nombre}&${v.descripcion}&${v.horaInicio}&${v.horaFin}&${username}&${v.peso}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tarea/${nombreFechaEvento}&${v.nombre}&${v.descripcion}&${v.horaInicio}&${v.horaFin}&${username}&${v.peso}`, {
           method: 'PUT'
         }).then((response) => {
           console.log(response)
@@ -239,7 +239,7 @@ export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction)
       console.log(result)
       if (result.isConfirmed){
         let v = result.value;
-          fetch(`http://localhost:8080/tarea/modificarAsignado/${nombreFechaEvento}&${nombreTarea}&${v.miembro}`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/tarea/modificarAsignado/${nombreFechaEvento}&${nombreTarea}&${v.miembro}`, {
             method: 'PUT'
           }).then((response) => {
             console.log(response)
@@ -335,7 +335,7 @@ export function fireModalCrearTarea(username, nombreFechaEvento, updateFunction)
         console.log(result)
         if (result.isConfirmed){
           let v = result.value;
-            fetch(`http://localhost:8080/tarea/${nombreFechaEvento}&${v.nombre}&${v.descripcion}&${v.horaInicio}&${v.horaFin}&${username}&${v.peso}`, {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/tarea/${nombreFechaEvento}&${v.nombre}&${v.descripcion}&${v.horaInicio}&${v.horaFin}&${username}&${v.peso}`, {
               method: 'PUT'
             }).then((response) => {
               console.log(response)

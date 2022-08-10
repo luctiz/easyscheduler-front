@@ -39,7 +39,7 @@ export default function ModalAgregarMiembroEquipo({username, equipo, updateModal
     e.stopPropagation()
     const form = new FormData(e.currentTarget);
 
-    let url = `http://localhost:8080/equipo/agregarMiembro/${equipo}&${form.get("miembro")}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/equipo/agregarMiembro/${equipo}&${form.get("miembro")}`
 
     // let data = {
     //     "lider": username,

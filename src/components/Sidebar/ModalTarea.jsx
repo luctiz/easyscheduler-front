@@ -47,7 +47,7 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
   if (schedule && !tareaData){
     
     console.log(schedule.title, schedule.raw.nombreEvento)
-    let url = `http://localhost:8080/tarea/getTareasByNombre/${schedule.title}&${schedule.raw.nombreEvento}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/tarea/getTareasByNombre/${schedule.title}&${schedule.raw.nombreEvento}`
     fetch(url, {
         method: 'GET'
     }).then((response) => {
@@ -63,7 +63,7 @@ export default function ModalTarea({username, updateCalendar, schedule, stateMod
     e.preventDefault()
     e.stopPropagation()
 
-    let url = `http://localhost:8080/tarea/modificarEstado/${schedule.raw.nombreFechaEvento}&${schedule.title}&1&${username}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/tarea/modificarEstado/${schedule.raw.nombreFechaEvento}&${schedule.title}&1&${username}`
     fetch(url, {
         method: 'PUT'
     }).then((response) => {

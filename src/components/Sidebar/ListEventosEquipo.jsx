@@ -16,7 +16,7 @@ export default function ListEventosEquipo({username, equipo,equipoData, updateEq
     const updateModal = () => {setEventosEquipo(null)}
 
     if (!eventosEquipo){
-        let url = `http://localhost:8080/evento/equipo//${equipo}`
+        let url = `${process.env.REACT_APP_BACKEND_URL}/evento/equipo//${equipo}`
         fetch(url, {
             method: 'GET'
         }).then((response) => {

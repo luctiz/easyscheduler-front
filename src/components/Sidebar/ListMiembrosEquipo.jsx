@@ -15,7 +15,7 @@ export default function ListMiembrosEquipo({username, equipo,equipoData, updateE
 
 
     const handleBorrarMiembro = (miembro) => {
-        let url = `http://localhost:8080/equipo/removerMiembro/${equipo}&${equipoData.lider}`
+        let url = `${process.env.REACT_APP_BACKEND_URL}/equipo/removerMiembro/${equipo}&${equipoData.lider}`
         let data = 
           [miembro]
         ;

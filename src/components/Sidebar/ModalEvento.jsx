@@ -39,7 +39,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
   const handleClose = () => setOpen(false);
   
   const handleBorrarEvento = (nombreFecha) => {
-    let url = `http://localhost:8080/evento/${nombreFecha}&${username}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/evento/${nombreFecha}&${username}`
 
     fetch(url, {method: 'DELETE'}
         ).then((response) => {
@@ -63,7 +63,7 @@ export default function ModalEvento({username, equipo,equipoData, eventoData, up
   }
 
   const handleRepartirEvento = (nombreFecha) => {
-    let url = `http://localhost:8080/tarea/repartirTareas/${nombreFecha}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/tarea/repartirTareas/${nombreFecha}`
     console.log(equipoData.miembros);
 
     let body = JSON.stringify(equipoData.miembros)    

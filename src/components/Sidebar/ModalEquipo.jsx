@@ -39,7 +39,7 @@ export default function ModalEquipo({username, equipo,updateTareas}) {
   const updateModal = () => setEquipoData(null)
 
   if (!equipoData){
-    let url = `http://localhost:8080/equipo/miembros/${equipo}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/equipo/miembros/${equipo}`
     fetch(url, {
         method: 'GET'
     }).then((response) => {

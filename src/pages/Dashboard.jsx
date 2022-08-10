@@ -10,6 +10,7 @@ import Calendar from '../components/Calendar';
 import { hashStringToColor } from '../utils';
 
 export default function Dashboard() {
+  console.log(process.env.REACT_APP_BACKEND_URL)
     let username;
     if (!window.localStorage.getItem("isLoggedIn") || !window.localStorage.getItem("username")){
         window.location.href = "/";
@@ -36,7 +37,7 @@ export default function Dashboard() {
 
 
     if (!equipos){
-        let url = `http://localhost:8080/usuario/${username}`
+        let url = `${process.env.REACT_APP_BACKEND_URL}/usuario/${username}`
   
         fetch(url, {
           method: 'GET'
@@ -70,7 +71,7 @@ export default function Dashboard() {
           auxCalendarsData["equiposColorsData"] = equipos.map((a,i) => {return {id: a, name: a, color: "#FFFFFF", bgColor: hashStringToColor(a), borderColor: hashStringToColor(a)}})
           auxCalendarsData["tareas"] = []
           equipos.forEach((equipo)=>{
-            let url = `http://localhost:8080/evento/equipo/${equipo}`
+            let url = `${process.env.REACT_APP_BACKEND_URL}/evento/equipo/${equipo}`
 
               fetch(url, {
                 method: 'GET'

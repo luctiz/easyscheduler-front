@@ -21,7 +21,7 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
 
 
   if (!eventoData){
-    let url = `http://localhost:8080/evento/${nombreFechaEvento}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}/evento/${nombreFechaEvento}`
     fetch(url, {
         method: 'GET'
     }).then((response) => {
@@ -41,7 +41,7 @@ export default function ListTareasEvento({username, equipo,equipoData, nombreFec
   }
 
   const handleBorrarTarea = (IDTAREA) => {
-    let url = `http://localhost:8080//tarea/borrarTarea/${IDTAREA}`
+    let url = `${process.env.REACT_APP_BACKEND_URL}//tarea/borrarTarea/${IDTAREA}`
 
 
     fetch(url, {method: 'PUT'})
