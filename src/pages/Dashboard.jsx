@@ -29,7 +29,7 @@ export default function Dashboard() {
 
     const updateTareas = () => {
       //updateEquipos();
-      setFinalUpdate(4);
+      setFinalUpdate(3);
       setCalendarData(null);
     }
 
