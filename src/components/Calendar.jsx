@@ -74,7 +74,7 @@ export default function Calendar({username, schedules,
     let clicked_date = scheduleData.start._date.toISOString().substr(0,10);
     let current_date = new Date().toISOString().substring(0,10);
     
-    fireModalCrearEvento(username, clicked_date, current_date, equiposColorsData.map((x) => x.name), updateEquipos)
+    fireModalCrearEvento(username, clicked_date, current_date,updateEquipos)
     
 
     console.log(scheduleData);

@@ -58,7 +58,7 @@ export default function ListEventosEquipo({username, equipo,equipoData}) {
           (equipoData.lider === username) ?
             <ListItem key="agregar" >
                 <ListItemButton
-                        onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), [equipo], updateModal)} >
+                        onClick={() => fireModalCrearEvento(username, new Date().toISOString().substring(0,10), new Date().toISOString().substring(0,10), updateModal,[equipo])} >
                 <ListItemIcon>
                 <Add />
                 </ListItemIcon>

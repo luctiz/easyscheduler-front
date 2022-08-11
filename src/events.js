@@ -1,10 +1,11 @@
 
 import swal from "sweetalert2";
 
-export function fireModalCrearEvento(username, clicked_date, current_date, listEquiposUser,updateFunction){
+export function fireModalCrearEvento(username, clicked_date, current_date,updateFunction, hardcoded_list = null){
   fetch(`${process.env.REACT_APP_BACKEND_URL}/usuario/${username}`, {method: 'GET'}
   ).then((response) => {
   response.json().then(data => {
+
 swal.fire({
   title: 'Crear evento',
   focusConfirm: true,
@@ -13,7 +14,9 @@ swal.fire({
     `<h4 class="swal-content" style="margin-bottom:2px"> Equipo </h4>
     <select id="nombreEquipo" style="margin-top:2px" class="swal2-input" name="select">
     `
-    + data.equipos.map((x) => x.nombre).map((x) => `<option value="${x}">${x}</option>`).reduce((x,y) => x+y) + 
+
+    + (hardcoded_list ? hardcoded_list.map((x) => `<option value="${x}">${x}</option>`).reduce((x,y) => x+y)
+      : data.equipos.map((x) => x.nombre).map((x) => `<option value="${x}">${x}</option>`).reduce((x,y) => x+y)) + 
     `</select> <br/>
     <h4 class="swal-content" style="margin-bottom:2px">Nombre</h4>
     <input id="nombreEvento" class="swal2-input" style="margin-top:2px" type="text" placeholder="Nombre Evento..." ><br />
